@@ -1,0 +1,252 @@
+---
+alwaysApply: false
+---
+# AquaMate - Contexto de Negocio
+
+## Visión General del Proyecto
+
+AquaMate es una aplicación móvil diseñada para ayudar a adultos ya sean estudiantes o profesionales a desarrollar y mantener hábitos saludables de hidratación. La aplicación surge como respuesta a un problema identificado en la población estudiantil: la dificultad para mantener una hidratación adecuada durante las jornadas académicas y laborales.
+
+## Problema que Resuelve
+Los adultos frecuentemente olvidan consumir agua de manera regular durante sus actividades diarias. Este grupo demográfico pasa en promedio entre 5 y 8 horas diarias en actividades académicas o laborales que requieren alta concentración, periodos durante los cuales la hidratación inadecuada puede afectar negativamente su rendimiento cognitivo, capacidad de concentración y retención de información.
+
+La deshidratación leve, que se produce cuando una persona pierde entre 1% y 2% del peso corporal en agua, tiene efectos demostrables en el desempeño académico y laboral. Sin embargo, muchas personas no son conscientes de cuánta agua necesitan consumir diariamente ni cómo sus características personales y nivel de actividad física influyen en estos requerimientos.
+
+## Público Objetivo
+
+El público principal de AquaMate son usuarios mayores de 18 años:
+
+- Pasan largas jornadas en actividades académicas o laborales
+- Utilizan dispositivos móviles de manera constante
+- Tienen consciencia sobre la importancia de hábitos saludables
+- Buscan herramientas prácticas para mejorar su bienestar
+- Necesitan recordatorios y seguimiento para mantener hábitos consistentes
+
+## Propuesta de Valor
+
+AquaMate ofrece una solución integral para el seguimiento de hidratación mediante:
+
+### Personalización Basada en Ciencia
+
+La aplicación calcula las necesidades de hidratación de cada usuario considerando sus características individuales. No todos los cuerpos necesitan la misma cantidad de agua, y AquaMate reconoce esta diversidad estableciendo metas personalizadas basadas en el peso corporal y el nivel de actividad física de cada persona.
+
+### Información Nutricional Contextualizada
+
+Además del seguimiento de hidratación, AquaMate proporciona información sobre el estado nutricional del usuario mediante el cálculo del Índice de Masa Corporal y estimaciones de requerimientos energéticos diarios. Esto permite al usuario tener una visión más completa de su salud y tomar decisiones informadas sobre su bienestar.
+
+### Facilidad de Uso
+
+El registro de consumo de agua está diseñado para ser extremadamente sencillo y rápido. Los usuarios pueden registrar su ingesta de líquidos en segundos, lo que reduce la fricción y aumenta la probabilidad de uso consistente.
+
+### Recordatorios Inteligentes
+
+La aplicación envía notificaciones en momentos apropiados para recordar al usuario que debe hidratarse, adaptándose a su horario activo y respetando los periodos de descanso.
+
+### Visualización Clara del Progreso
+
+Los usuarios pueden ver de manera inmediata su avance hacia la meta diaria, así como consultar su historial para identificar patrones y mantener la motivación.
+
+### Privacidad Total
+
+Toda la información del usuario permanece en su dispositivo. No se requiere crear cuentas, iniciar sesión ni compartir datos personales con servidores externos.
+
+## Funcionalidades Principales
+
+### Configuración de Perfil Personal
+
+Al iniciar la aplicación por primera vez, el usuario proporciona información básica sobre sí mismo: peso, altura, edad, género y nivel de actividad física. Esta información permite a la aplicación realizar cálculos personalizados y establecer metas apropiadas.
+
+### Cálculo de Necesidades de Hidratación
+
+Con base en el perfil del usuario, la aplicación calcula automáticamente cuántos mililitros de agua debe consumir diariamente. Este cálculo considera que las personas sedentarias necesitan aproximadamente 30 mililitros por kilogramo de peso corporal, mientras que las personas con actividad física moderada requieren 35 mililitros por kilogramo, y quienes tienen actividad física intensa necesitan 40 mililitros por kilogramo.
+
+### Evaluación del Estado Nutricional
+
+La aplicación calcula el Índice de Masa Corporal del usuario, que es un indicador ampliamente utilizado para evaluar si una persona tiene un peso adecuado en relación con su altura. Este cálculo se realiza dividiendo el peso en kilogramos entre la altura en metros al cuadrado.
+
+La clasificación del IMC se realiza según las normativas colombianas establecidas en las Resoluciones 2465 y 3803 de 2016, que diferencian entre adultos jóvenes y adultos mayores:
+
+Para adultos entre 18 y 59 años, se considera delgadez un IMC menor a 18.5, peso normal entre 18.5 y 24.9, sobrepeso entre 25 y 29.9, y obesidad un IMC de 30 o superior.
+
+Para adultos mayores de 65 años, los rangos son diferentes, considerando que las necesidades nutricionales y la composición corporal varían con la edad.
+
+### Estimación de Requerimientos Energéticos
+
+AquaMate calcula la Tasa Metabólica Basal del usuario, que representa la cantidad mínima de energía que el cuerpo necesita para mantener sus funciones vitales en reposo. Este cálculo se realiza utilizando fórmulas validadas por la Organización Mundial de la Salud y la Organización de las Naciones Unidas para la Alimentación y la Agricultura.
+
+Para hombres adultos entre 18 y 59 años, la fórmula multiplica el peso en kilogramos por 15.057 y suma 692.2. Para mujeres del mismo rango de edad, se multiplica el peso por 14.818 y se suma 486.6. Las fórmulas son diferentes para adultos mayores de 60 años, reflejando los cambios metabólicos asociados con el envejecimiento.
+
+A partir de la Tasa Metabólica Basal, la aplicación calcula el Gasto Energético Total multiplicando la TMB por un factor de actividad física. Este factor varía entre 1.40 para personas con estilo de vida sedentario, hasta 2.40 para personas con actividad física intensa y regular.
+
+### Registro de Consumo de Agua
+
+La funcionalidad central de la aplicación es el registro del consumo de agua. Los usuarios pueden registrar cuánta agua han bebido de varias maneras:
+
+Mediante botones de acceso rápido para cantidades predefinidas: 250 mililitros para un vaso pequeño, 500 mililitros para un vaso grande, y 750 mililitros para una botella estándar.
+
+O ingresando una cantidad personalizada cuando beben recipientes de tamaño diferente.
+
+Cada vez que el usuario registra un consumo, la aplicación actualiza inmediatamente el progreso hacia la meta diaria y guarda esta información en el historial.
+
+### Sistema de Recordatorios
+
+Para ayudar a los usuarios a mantener una hidratación consistente a lo largo del día, la aplicación envía notificaciones recordándoles que deben beber agua. Estos recordatorios funcionan dentro de un horario activo, típicamente entre las 7 de la mañana y las 10 de la noche, para no interrumpir el descanso nocturno.
+
+Los usuarios pueden configurar con qué frecuencia desean recibir estos recordatorios: cada hora, cada dos horas, cada tres horas o cada cuatro horas, según sus preferencias y rutina diaria. También pueden desactivar completamente las notificaciones si lo prefieren.
+
+### Visualización del Progreso Diario
+
+La pantalla principal muestra de manera clara y visual cuánto ha progresado el usuario hacia su meta de hidratación del día. Esta información se presenta mediante indicadores gráficos que muestran tanto la cantidad consumida como la cantidad que aún falta por beber.
+
+Cuando el usuario alcanza su meta diaria, la aplicación muestra un mensaje de felicitación para reforzar positivamente el comportamiento y mantener la motivación.
+
+### Historial Semanal
+
+Los usuarios pueden consultar su consumo de agua de los últimos siete días presentado en forma de gráfico. Este historial visual permite identificar patrones, como días en los que se consumió menos agua de lo habitual, y muestra claramente qué días se cumplió la meta y cuáles no.
+
+La aplicación también calcula y muestra el promedio de consumo de la semana, proporcionando una perspectiva más amplia del comportamiento de hidratación.
+
+### Historial Completo
+
+Para usuarios que desean un seguimiento más detallado, la aplicación mantiene un registro de los últimos 30 días de hidratación. Este historial permite consultar cualquier día específico y ver estadísticas generales como el número de días en los que se cumplió la meta durante el periodo.
+
+### Ajustes y Configuración
+
+Los usuarios pueden modificar su información personal en cualquier momento desde la sección de configuración. Esto es importante porque el peso y el nivel de actividad física pueden cambiar con el tiempo, y la aplicación recalcula automáticamente las metas cuando se actualiza esta información.
+
+También pueden ajustar las preferencias de notificaciones y la presentación de la información según sus necesidades.
+
+## Beneficios para el Usuario
+
+### Salud y Bienestar
+
+Mantener una hidratación adecuada tiene múltiples beneficios para la salud: mejora la función cognitiva, ayuda a regular la temperatura corporal, facilita la digestión, mantiene la piel saludable y puede ayudar en el control del peso. Al usar AquaMate, los usuarios desarrollan un hábito que impacta positivamente su salud general.
+
+### Rendimiento Académico y Laboral
+
+Una hidratación apropiada mejora la concentración, la memoria y el tiempo de reacción. Los estudiantes que mantienen buenos niveles de hidratación tienden a tener mejor desempeño en exámenes y actividades que requieren atención sostenida.
+
+### Prevención de Problemas de Salud
+
+La deshidratación crónica puede contribuir a problemas como cálculos renales, infecciones urinarias recurrentes, estreñimiento y dolores de cabeza frecuentes. Mantener una hidratación consistente ayuda a prevenir estas condiciones.
+
+### Autoconocimiento
+
+Al usar AquaMate, los usuarios aprenden sobre sus propias necesidades de hidratación y desarrollan mayor consciencia sobre señales de su cuerpo. También obtienen información valiosa sobre su estado nutricional y requerimientos energéticos.
+
+### Formación de Hábitos
+
+La aplicación ayuda a transformar la hidratación de una acción ocasional a un hábito consistente mediante recordatorios oportunos, seguimiento visual del progreso y refuerzo positivo cuando se alcanzan las metas.
+
+## Diferenciadores
+
+### Enfoque Científico
+
+AquaMate utiliza fórmulas y clasificaciones validadas por organizaciones internacionales de salud y adoptadas por las normativas colombianas, no recomendaciones arbitrarias.
+
+### Personalización Real
+
+En lugar de recomendar la misma cantidad de agua a todos los usuarios, AquaMate calcula necesidades individuales basándose en características personales.
+
+### Simplicidad de Uso
+
+El registro de agua requiere mínimo esfuerzo, lo que aumenta la probabilidad de uso consistente a largo plazo.
+
+### Respeto a la Privacidad
+
+Toda la información permanece en el dispositivo del usuario, sin cuentas, sin servidores externos, sin compartir datos con terceros.
+
+### Sin Conexión Requerida
+
+La aplicación funciona completamente sin necesidad de conexión a internet, garantizando disponibilidad en cualquier momento y lugar.
+
+### Información Integral
+
+Más allá de la hidratación, proporciona contexto sobre estado nutricional y requerimientos energéticos, ofreciendo una visión más completa de la salud del usuario.
+
+## Contexto de Uso
+
+AquaMate está diseñada para integrarse naturalmente en la vida diaria del usuario. Durante una jornada típica:
+
+Por la mañana, al despertar, el usuario puede registrar su primer vaso de agua y ver su meta del día. A lo largo de la mañana, recibe recordatorios suaves para beber agua entre clases o reuniones. Durante el almuerzo, registra lo que ha bebido con la comida. En la tarde, continúa recibiendo recordatorios y puede consultar rápidamente su progreso. Al finalizar el día, puede revisar si alcanzó su meta y consultar su desempeño de la semana.
+
+El fin de semana, cuando las rutinas cambian, el usuario mantiene el seguimiento y puede ajustar la frecuencia de recordatorios si lo desea.
+
+## Impacto Esperado
+
+A corto plazo, se espera que los usuarios desarrollen mayor consciencia sobre su consumo de agua y aumenten su ingesta diaria de líquidos hasta alcanzar niveles adecuados.
+
+A mediano plazo, la formación de hábitos consistentes debería traducirse en mejoras en concentración, energía y bienestar general. Los usuarios deberían experimentar menos dolores de cabeza, mejor digestión y mayor claridad mental.
+
+A largo plazo, el uso sostenido de AquaMate contribuye a la prevención de problemas de salud asociados con deshidratación crónica y ayuda a los usuarios a mantener hábitos saludables que benefician su calidad de vida general.
+
+## Casos de Uso Típicos
+
+### Estudiante Universitario
+
+María tiene 21 años y estudia ingeniería. Pasa largas horas en la biblioteca preparando exámenes. Antes de usar AquaMate, frecuentemente terminaba el día con dolores de cabeza y sensación de cansancio. Después de configurar su perfil en la aplicación, descubre que necesita consumir 2.1 litros de agua diarios. Con los recordatorios cada dos horas, logra mantener una hidratación constante y nota mejoras en su concentración y energía durante las sesiones de estudio.
+
+### Profesional en Oficina
+
+Carlos trabaja en una oficina con jornadas de 8 horas frente a la computadora. Su trabajo requiere alta concentración en análisis de datos. Solía beber únicamente café durante la mañana y algo de agua con el almuerzo. Al usar AquaMate, establece recordatorios cada tres horas y mantiene una botella de agua en su escritorio. Después de tres semanas, su productividad aumenta notablemente y los dolores de cabeza frecuentes que experimentaba por las tardes desaparecen.
+
+### Deportista Aficionado
+
+Ana practica yoga tres veces por semana y sale a correr los fines de semana. Configuró su perfil en AquaMate como persona moderadamente activa, estableciendo una meta de 2.45 litros diarios. Los días que hace ejercicio, puede aumentar manualmente su meta para compensar la pérdida de líquidos por sudoración. El historial semanal le ayuda a identificar que los lunes consume menos agua de lo necesario, así que ajusta sus recordatorios para ese día.
+
+## Principios Guía del Proyecto
+
+### Centrado en el Usuario
+
+Todas las decisiones sobre funcionalidades y diseño priorizan la experiencia del usuario y la facilidad de uso sobre cualquier otra consideración.
+
+### Basado en Evidencia
+
+Las recomendaciones y cálculos se fundamentan en investigación científica validada y normativas oficiales de salud, no en tendencias pasajeras o creencias populares.
+
+### Respeto y Privacidad
+
+La información personal del usuario es sagrada. No se recopila, no se comparte, no se monetiza.
+
+### Simplicidad
+
+La aplicación hace bien unas pocas cosas importantes en lugar de intentar hacer muchas cosas de manera mediocre. Cada funcionalidad debe justificar su existencia.
+
+### Accesibilidad
+
+AquaMate debe ser usable por el mayor número posible de personas, independientemente de sus capacidades o experiencia técnica.
+
+### Sostenibilidad
+
+La aplicación debe funcionar de manera confiable a largo plazo sin requerir mantenimiento constante ni consumir recursos excesivos del dispositivo.
+
+## Métricas de Éxito
+
+El éxito de AquaMate se medirá por:
+
+- Porcentaje de usuarios que alcanzan su meta de hidratación diaria
+- Número de días consecutivos de uso de la aplicación
+- Incremento promedio en consumo de agua comparado con la línea base
+- Satisfacción del usuario con la facilidad de uso
+- Retención de usuarios después de 30 días de uso
+
+## Justificación del Proyecto
+
+Este proyecto nace en el contexto académico del Politécnico Gran Colombiano como parte del énfasis en Programación Móvil. El equipo de desarrollo, conformado por estudiantes de ingeniería, identificó la necesidad de crear una solución que no solo cumpla con objetivos académicos, sino que también genere un impacto positivo real en la salud de sus usuarios.
+
+La elección de enfocarse en hidratación responde a que es un aspecto fundamental de la salud frecuentemente descuidado, pero relativamente sencillo de mejorar con las herramientas adecuadas. A diferencia de otros hábitos saludables que requieren cambios complejos en el estilo de vida, aumentar el consumo de agua es una modificación simple que produce beneficios significativos y medibles.
+
+El proyecto también representa una oportunidad para aplicar conocimientos teóricos en un contexto práctico, desarrollando una aplicación completa que considera aspectos de diseño de experiencia de usuario, manejo de datos, notificaciones, visualización de información y persistencia local de datos.
+
+## Evolución Futura
+
+Aunque la versión inicial de AquaMate se enfoca en las funcionalidades esenciales de seguimiento de hidratación, el proyecto tiene potencial para crecer en el futuro. Posibles expansiones podrían incluir:
+
+- Integración con dispositivos wearables para seguimiento automático
+- Recordatorios basados en actividad detectada por sensores del dispositivo
+- Recomendaciones de hidratación ajustadas por clima y temperatura ambiente
+- Seguimiento de otros líquidos además de agua
+- Comunidad para compartir logros y mantener motivación
+- Versión web para consultar historial desde cualquier dispositivo
+
+Sin embargo, cualquier expansión futura debe mantener los principios fundamentales de simplicidad, privacidad y enfoque en el usuario que caracterizan al proyecto desde su concepción.

@@ -1,0 +1,825 @@
+---
+alwaysApply: true
+---
+# Code Rules - Kotlin Multiplatform
+
+## Language Requirement
+
+**ALL CODE MUST BE WRITTEN IN ENGLISH.**
+
+This includes:
+- Variable names
+- Function names
+- Class names
+- Property names
+- Parameter names
+- Package names
+- Comments (if necessary)
+- Documentation (KDoc)
+- String constants used in code
+- Enum values
+- Test names
+
+**Incorrect (Spanish):**
+```kotlin
+data class Usuario(
+    val nombre: String,
+    val peso: Double,
+    val altura: Double
+)
+
+fun calcularIMC(pesoKg: Double, alturaMetros: Double): Double {
+    return pesoKg / (alturaMetros * alturaMetros)
+}
+```
+
+**Correct (English):**
+```kotlin
+data class User(
+    val name: String,
+    val weight: Double,
+    val height: Double
+)
+
+fun calculateBMI(weightKg: Double, heightMeters: Double): Double {
+    return weightKg / (heightMeters * heightMeters)
+}
+```
+
+## Comments and Documentation
+
+### Prohibition of Inline Comments
+
+**DO NOT add `//` type comments within the code.**
+
+Reason: Code should be self-documenting. If you need to explain what the code does with comments, it means the code is not clear enough. Refactor using descriptive names for variables, functions, and classes instead of adding comments.
+
+**Incorrect:**
+```kotlin
+// Calculate the user's BMI
+val bmi = weight / (height * height)
+
+// Check if user already exists
+if (user != null) {
+    // Update existing record
+    repository.update(user)
+}
+```
+
+**Correct:**
+```kotlin
+val bodyMassIndex = weight / (height * height)
+
+if (userExists(userId)) {
+    updateUserProfile(user)
+}
+```
+
+### KDoc Documentation
+
+**Only add KDoc to public elements (public API).**
+
+Internal, private, and protected elements do not require KDoc documentation as they are implementation details.
+
+**Elements that require KDoc:**
+- Public classes
+- Public interfaces
+- Public functions
+- Public properties of public classes
+- Public enums and their values when not obvious
+- Public data classes when their properties need explanation
+
+**Elements that DO NOT require KDoc:**
+- Private functions
+- Private properties
+- Internal implementation functions
+- Local variables
+- Parameters of private functions
+- Private inner classes
+
+**Correct example:**
+
+```kotlin
+/**
+ * Calculates Body Mass Index based on weight and height.
+ *
+ * @param weightKg User's weight in kilograms. Must be greater than 0.
+ * @param heightMeters User's height in meters. Must be greater than 0.
+ * @return The calculated BMI as Double.
+ * @throws IllegalArgumentException if weight or height are less than or equal to 0.
+ */
+fun calculateBMI(weightKg: Double, heightMeters: Double): Double {
+    require(weightKg > 0) { "Weight must be greater than 0" }
+    require(heightMeters > 0) { "Height must be greater than 0" }
+    return weightKg / (heightMeters * heightMeters)
+}
+
+private fun validateUserData(user: User): Boolean {
+    return user.weight > 0 && user.height > 0
+}
+```
+
+In the example above, `calculateBMI` is public and has KDoc, while `validateUserData` is private and doesn't need it.
+
+### KDoc Structure
+
+When KDoc is necessary, follow this structure:
+
+```kotlin
+/**
+ * Brief one-line description of what the function/class does.
+ *
+ * More detailed description if necessary. Explains the purpose,
+ * not the implementation. Can span multiple lines.
+ *
+ * @param parameterName Parameter description
+ * @param anotherParameter Another parameter description
+ * @return Description of what is returned
+ * @throws ExceptionType When this exception is thrown
+ */
+```
+
+**Omit unnecessary sections:**
+- If there are no parameters, omit `@param`
+- If it returns Unit, omit `@return`
+- If it doesn't throw exceptions, omit `@throws`
+
+## Code Generation
+
+### Rule of Strictly Requested Code
+
+**Only generate explicitly requested code. Do not add additional unrequested code.**
+
+When asked to create a specific function, class, or file:
+- Create only what was requested
+- Do not add unrequested helper functions
+- Do not add unnecessary imports
+- Do not add unrequested example or test code
+- Do not add TODOs or comments about future improvements
+
+**Example request:**
+
+"Create a data class UserProfile with weight and height"
+
+**Incorrect (adds unrequested code):**
+```kotlin
+data class UserProfile(
+    val weight: Double,
+    val height: Double
+) {
+    // TODO: Add validations
+    fun calculateBMI(): Double {
+        return weight / (height * height)
+    }
+
+    fun isValid(): Boolean {
+        return weight > 0 && height > 0
+    }
+}
+```
+
+**Correct (only what was requested):**
+```kotlin
+data class UserProfile(
+    val weight: Double,
+    val height: Double
+)
+```
+
+If additional functions are needed, they will be explicitly requested in another instruction.
+
+### Exceptions
+
+The only exceptions where unrequested code can be added are:
+
+1. **Necessary imports**: Always add required imports for the code to compile.
+2. **Critical error handling**: If a function can obviously fail and not handling the error would cause a crash, add basic validation.
+
+## File Format
+
+### Blank Line at the End
+
+**All Kotlin files must end with exactly one blank line.**
+
+Reason: It's a POSIX convention and helps with diff tools and version control.
+
+**Correct file structure:**
+
+```kotlin
+package com.aquamate.domain.model
+
+data class User(
+    val id: String,
+    val name: String,
+    val weight: Double
+)
+⏎
+```
+
+The last line of the file must be an empty line (represented with ⏎).
+
+### Verification
+
+Configure the IDE to:
+- Automatically add blank line at end of file on save
+- Show warning if final line is missing
+
+In the `.editorconfig` file:
+```
+[*.kt]
+insert_final_newline = true
+```
+
+## Code Organization
+
+### Order of Elements in a Class
+
+When creating a class, follow this order:
+
+1. Companion object (if exists)
+2. Properties
+3. Init block (if exists)
+4. Secondary constructor (if exists)
+5. Public functions
+6. Private functions
+
+**Example:**
+
+```kotlin
+class NutritionCalculator(
+    private val bmiFormula: BMIFormula
+) {
+    companion object {
+        const val MIN_BMI = 10.0
+        const val MAX_BMI = 60.0
+    }
+
+    private val cache = mutableMapOf<String, Double>()
+
+    fun calculateBMI(weight: Double, height: Double): Double {
+        return validateAndCalculate(weight, height)
+    }
+
+    private fun validateAndCalculate(weight: Double, height: Double): Double {
+        require(weight > 0)
+        require(height > 0)
+        return bmiFormula.calculate(weight, height)
+    }
+}
+```
+
+### Imports
+
+- Group imports by package
+- Do not use wildcard imports (*)
+- Sort alphabetically
+- Separate Android/iOS imports from third-party library imports
+
+## Naming
+
+### Descriptive Names
+
+Variable, function, and class names must be descriptive enough to eliminate the need for comments.
+
+**Incorrect:**
+```kotlin
+val x = w / (h * h) // Calculates BMI
+```
+
+**Correct:**
+```kotlin
+val bodyMassIndex = weightKilograms / (heightMeters * heightMeters)
+```
+
+### Naming Conventions
+
+- Classes and Interfaces: PascalCase
+- Functions and variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+- Packages: lowercase without underscores
+- Files: PascalCase corresponding to the main class
+
+**Examples:**
+```kotlin
+// Classes
+class UserProfile
+class HydrationCalculator
+interface Repository
+
+// Functions and variables
+fun calculateWaterIntake()
+val dailyGoal: Int
+var currentProgress: Double
+
+// Constants
+const val MAX_WATER_INTAKE = 5000
+const val DEFAULT_REMINDER_INTERVAL = 2
+
+// Packages
+package com.aquamate.domain.model
+package com.aquamate.data.repository
+```
+
+## Line Length
+
+**Maximum 120 characters per line.**
+
+If a line exceeds this limit, split it appropriately:
+
+```kotlin
+fun calculateEnergyRequirement(
+    basalMetabolicRate: Double,
+    physicalActivityLevel: Double,
+    correctionFactor: Double
+): Double {
+    return basalMetabolicRate * physicalActivityLevel * correctionFactor
+}
+```
+
+## Functions
+
+### Function Size
+
+- A function should do one thing only
+- Ideally, a function should not exceed 20 lines
+- If a function is longer, consider splitting it into smaller functions
+
+### Parameters
+
+- Maximum 5 parameters per function
+- If you need more parameters, consider creating a data class to group them
+
+**Instead of:**
+```kotlin
+fun createUser(
+    firstName: String,
+    lastName: String,
+    age: Int,
+    weight: Double,
+    height: Double,
+    gender: Gender,
+    activity: ActivityLevel
+): User
+```
+
+**Do:**
+```kotlin
+data class UserData(
+    val firstName: String,
+    val lastName: String,
+    val age: Int,
+    val weight: Double,
+    val height: Double,
+    val gender: Gender,
+    val activity: ActivityLevel
+)
+
+fun createUser(data: UserData): User
+```
+
+## Error Handling
+
+### Validations
+
+Use `require` to validate input parameters:
+
+```kotlin
+fun calculateHydration(weightKg: Double): Int {
+    require(weightKg > 0) { "Weight must be greater than 0" }
+    return (weightKg * 30).toInt()
+}
+```
+
+Use `check` to validate internal state:
+
+```kotlin
+fun saveUser(user: User) {
+    check(isInitialized) { "Repository has not been initialized" }
+    database.save(user)
+}
+```
+
+### Result Type
+
+Prefer `Result<T>` over exceptions for operations that can fail:
+
+```kotlin
+fun loadUser(id: String): Result<User> {
+    return try {
+        val user = database.findById(id)
+        Result.success(user)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+}
+```
+
+## Immutability
+
+### Prefer val over var
+
+Use `val` whenever possible. Use `var` only when absolutely necessary.
+
+**Prefer:**
+```kotlin
+val appName = "AquaMate"
+val version = 1.0
+```
+
+**Avoid:**
+```kotlin
+var appName = "AquaMate"
+var version = 1.0
+```
+
+### Immutable Collections
+
+Use immutable collections by default:
+
+```kotlin
+val users: List<User> = listOf(user1, user2)
+val configuration: Map<String, String> = mapOf("theme" to "light")
+```
+
+Only use mutable collections when modification is necessary:
+
+```kotlin
+private val temporaryRecords: MutableList<Record> = mutableListOf()
+```
+
+## Null Safety
+
+### Avoid Unnecessary Nulls
+
+Do not use nullable types when not necessary:
+
+**Avoid:**
+```kotlin
+fun calculateBMI(weight: Double?): Double? {
+    if (weight == null) return null
+    return weight / 1.75
+}
+```
+
+**Prefer:**
+```kotlin
+fun calculateBMI(weight: Double): Double {
+    return weight / 1.75
+}
+```
+
+### Elvis Operator
+
+Use the Elvis operator for default values:
+
+```kotlin
+val name = user.name ?: "Unnamed User"
+```
+
+### Avoid !!
+
+Do not use the `!!` operator (not-null assertion). If necessary, refactor the code.
+
+## Kotlin Multiplatform Specific
+
+### Expect/Actual
+
+Document `expect` functions with KDoc as they are part of the public contract:
+
+```kotlin
+/**
+ * Gets the current system date and time.
+ *
+ * @return Timestamp in milliseconds since epoch.
+ */
+expect fun getCurrentTimestamp(): Long
+```
+
+`actual` implementations do not need to repeat KDoc:
+
+```kotlin
+actual fun getCurrentTimestamp(): Long {
+    return System.currentTimeMillis()
+}
+```
+
+### commonMain
+
+Code in `commonMain` must be pure Kotlin without platform-specific dependencies.
+
+### Platform-Specific Code
+
+Minimize platform-specific code. Only use when absolutely necessary.
+
+## Complete Example
+
+**File: BMICalculator.kt**
+
+```kotlin
+package com.aquamate.domain.usecase
+
+import com.aquamate.domain.model.BMIClassification
+
+/**
+ * Calculates Body Mass Index and determines its classification.
+ */
+class BMICalculator {
+
+    /**
+     * Calculates BMI based on weight and height.
+     *
+     * @param weightKg Weight in kilograms. Must be greater than 0.
+     * @param heightMeters Height in meters. Must be greater than 0.
+     * @return The calculated BMI.
+     * @throws IllegalArgumentException if parameters are invalid.
+     */
+    fun calculate(weightKg: Double, heightMeters: Double): Double {
+        require(weightKg > 0) { "Weight must be greater than 0" }
+        require(heightMeters > 0) { "Height must be greater than 0" }
+
+        return weightKg / (heightMeters * heightMeters)
+    }
+
+    /**
+     * Classifies BMI according to Colombian regulations for adults 18-59 years.
+     *
+     * @param bmi BMI value to classify.
+     * @return The corresponding classification.
+     */
+    fun classify(bmi: Double): BMIClassification {
+        return when {
+            bmi < 18.5 -> BMIClassification.UNDERWEIGHT
+            bmi < 25.0 -> BMIClassification.NORMAL
+            bmi < 30.0 -> BMIClassification.OVERWEIGHT
+            else -> BMIClassification.OBESE
+        }
+    }
+}
+⏎
+```
+
+## Boolean Expressions
+
+### Naming Boolean Variables and Functions
+
+Boolean variables and functions should be named as questions that can be answered with yes/no:
+
+**Variables:**
+```kotlin
+val isInitialized: Boolean
+val hasNetworkConnection: Boolean
+val canSubmit: Boolean
+val shouldShowWarning: Boolean
+```
+
+**Functions:**
+```kotlin
+fun isValid(): Boolean
+fun hasPermission(): Boolean
+fun canExecute(): Boolean
+fun shouldRefresh(): Boolean
+```
+
+### Avoid Negations
+
+Avoid negative boolean names as they create double negatives:
+
+**Avoid:**
+```kotlin
+val isNotReady: Boolean
+if (!isNotReady) { ... }  // confusing double negative
+```
+
+**Prefer:**
+```kotlin
+val isReady: Boolean
+if (isReady) { ... }  // clear and direct
+```
+
+## Enums
+
+Enum values should be in UPPER_SNAKE_CASE:
+
+```kotlin
+enum class Gender {
+    MALE,
+    FEMALE
+}
+
+enum class ActivityLevel {
+    SEDENTARY,
+    MODERATELY_ACTIVE,
+    VERY_ACTIVE
+}
+
+enum class BMIClassification {
+    UNDERWEIGHT,
+    NORMAL,
+    OVERWEIGHT,
+    OBESE
+}
+```
+
+## Data Classes
+
+Keep data classes simple and focused:
+
+```kotlin
+data class User(
+    val id: String,
+    val name: String,
+    val email: String
+)
+
+data class HydrationRecord(
+    val id: String,
+    val userId: String,
+    val amountMl: Int,
+    val timestamp: Long
+)
+```
+
+Do not add logic to data classes. If logic is needed, create a separate class or use case.
+
+## Extension Functions
+
+Extension functions should be in separate files named appropriately:
+
+```kotlin
+// File: DoubleExtensions.kt
+fun Double.roundToDecimals(decimals: Int): Double {
+    val multiplier = 10.0.pow(decimals)
+    return (this * multiplier).roundToInt() / multiplier
+}
+
+// File: StringExtensions.kt
+fun String.isValidEmail(): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+```
+
+## Constants
+
+Group related constants in objects:
+
+```kotlin
+object HydrationConstants {
+    const val ML_PER_KG_SEDENTARY = 30
+    const val ML_PER_KG_MODERATE = 35
+    const val ML_PER_KG_ACTIVE = 40
+    const val MIN_DAILY_INTAKE_ML = 1000
+    const val MAX_DAILY_INTAKE_ML = 5000
+}
+
+object NotificationConstants {
+    const val CHANNEL_ID = "hydration_reminders"
+    const val DEFAULT_INTERVAL_HOURS = 2
+    const val MIN_INTERVAL_HOURS = 1
+    const val MAX_INTERVAL_HOURS = 4
+}
+```
+
+## Testing
+
+### Test Naming
+
+Test function names should clearly describe what is being tested:
+
+```kotlin
+@Test
+fun `should calculate correct BMI when valid weight and height provided`() {
+    // Arrange
+    val calculator = BMICalculator()
+    val weight = 70.0
+    val height = 1.75
+
+    // Act
+    val result = calculator.calculate(weight, height)
+
+    // Assert
+    assertEquals(22.86, result, 0.01)
+}
+
+@Test
+fun `should throw exception when weight is zero`() {
+    // Arrange
+    val calculator = BMICalculator()
+
+    // Act & Assert
+    assertThrows<IllegalArgumentException> {
+        calculator.calculate(0.0, 1.75)
+    }
+}
+```
+
+### Test Structure
+
+Follow the AAA pattern (Arrange-Act-Assert):
+
+```kotlin
+@Test
+fun `should classify BMI as normal when value is between 18_5 and 25`() {
+    // Arrange
+    val calculator = BMICalculator()
+    val bmi = 22.0
+
+    // Act
+    val classification = calculator.classify(bmi)
+
+    // Assert
+    assertEquals(BMIClassification.NORMAL, classification)
+}
+```
+
+## Package Structure
+
+Organize packages by feature and layer:
+
+```
+com.aquamate
+├── domain
+│   ├── model
+│   │   ├── User.kt
+│   │   ├── HydrationRecord.kt
+│   │   └── BMIClassification.kt
+│   ├── usecase
+│   │   ├── CalculateBMI.kt
+│   │   ├── CalculateWaterGoal.kt
+│   │   └── RegisterWaterIntake.kt
+│   └── repository
+│       └── UserRepository.kt
+├── data
+│   ├── repository
+│   │   └── UserRepositoryImpl.kt
+│   ├── local
+│   │   └── database
+│   │       └── UserDao.kt
+│   └── mapper
+│       └── UserMapper.kt
+└── presentation
+    ├── viewmodel
+    │   ├── HomeViewModel.kt
+    │   └── ProfileViewModel.kt
+    └── state
+        ├── HomeState.kt
+        └── ProfileState.kt
+```
+
+## Summary of Rules
+
+1. ✅ ALL code must be in English (names, comments, documentation)
+2. ❌ NO `//` comments in code
+3. ✅ Self-documenting code with descriptive names
+4. ✅ KDoc only for public APIs
+5. ❌ DO NOT add unrequested code
+6. ✅ One blank line at the end of each file
+7. ✅ Maximum 120 characters per line
+8. ✅ Prefer `val` over `var`
+9. ✅ Use `require` and `check` for validations
+10. ✅ Use `Result<T>` for operations that can fail
+11. ❌ Avoid `!!` and unnecessary nulls
+12. ✅ Boolean names as questions (isValid, hasPermission)
+13. ✅ Enum values in UPPER_SNAKE_CASE
+14. ✅ Keep data classes simple
+15. ✅ Test names clearly describe what is tested
+
+## Verification
+
+These rules should be verified through:
+
+- Manual code review
+- Configured linters (detekt, ktlint)
+- Pre-commit git hooks
+- CI/CD pipeline with automatic validation
+
+## Configuration Files
+
+### .editorconfig
+
+```ini
+[*.kt]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+```
+
+### detekt.yml (excerpt)
+
+```yaml
+style:
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+  ForbiddenComment:
+    active: true
+    values: ['TODO:', 'FIXME:', 'STOPSHIP:']
+```
+
+---
+
+**Version**: 1.0
+**Last Updated**: November 2025
