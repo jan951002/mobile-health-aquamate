@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "76058953565",
+    "project_id": "poli-health-aquamate",
+    "storage_bucket": "poli-health-aquamate.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76058953565:android:ac388f2b7255c0d8f84ab4",
+        "android_client_info": {
+          "package_name": "com.poli.health.aquamate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbjLIva2Z_N7vZdwSVuSHKKXdGD_MbN3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
