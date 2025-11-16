@@ -22,4 +22,15 @@ object AquaMateStrings {
         const val CANCEL = "Cancel"
         const val OK = "OK"
     }
+
+    object Intake {
+        const val VOLUME_MUST_BE_POSITIVE = "Volume must be greater than 0"
+        const val VOLUME_EXCEEDS_LIMIT = "Volume cannot exceed 2000ml"
+        const val NO_RECORDS_TO_DELETE = "No records to delete"
+        const val ERROR_LOADING_DATA = "Error loading data"
+        const val ERROR_REGISTERING_INTAKE = "Error registering intake"
+        const val ERROR_DELETING_RECORD = "Error deleting record"
+        const val RECORD_DELETED = "Record deleted"
+        const val VOLUME_REGISTERED = "ml registered!"
+    }
 }

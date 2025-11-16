@@ -4,10 +4,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.poli.health.aquamate.onboarding.auth.presentation.screen.AuthScreen
+import androidx.navigation.compose.rememberNavController
+import com.poli.health.aquamate.navigation.NavGraph
+import com.poli.health.aquamate.navigation.Route
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.IsUserLoggedInUseCase
 import com.poli.health.aquamate.ui.theme.AquaMateTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 @Composable
 @Preview
@@ -17,11 +26,21 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            AuthScreen(
-                onAuthSuccess = {
-                    println("Authenticated successfully")
-                }
-            )
+            val navController = rememberNavController()
+            val isUserLoggedInUseCase: IsUserLoggedInUseCase = koinInject()
+            val startDestination = remember { mutableStateOf<Route?>(null) }
+
+            LaunchedEffect(Unit) {
+                val isLoggedIn = isUserLoggedInUseCase()
+                startDestination.value = if (isLoggedIn) Route.Intake else Route.Auth
+            }
+
+            startDestination.value?.let { destination ->
+                NavGraph(
+                    navController = navController,
+                    startDestination = destination
+                )
+            }
         }
     }
 }

@@ -7,3 +7,5 @@
 - Implement auth module (sign in, sign up, sign out) in the app.
 - Implement Datastore (jetpack) to persist local data.
 - Implemented firebase from gitlive. This tool allows use firebase features.
+- Implemented screen of measure daily
+- Implemented navigation in auth y measure daily screens
