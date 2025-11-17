@@ -27,13 +27,12 @@ class LoginViewModel(
                 _uiState.value = LoginUiState.Loading
             }
 
-            val result = signInWithEmailUseCase(email, password)
-
-            val newState = when (result) {
+            val newState = when (val result = signInWithEmailUseCase(email, password)) {
                 is AuthState.Authenticated -> LoginUiState.Success(result.user)
                 is AuthState.NotAuthenticated -> LoginUiState.Error(
                     message = result.error ?: "Unknown error occurred"
                 )
+
                 AuthState.Loading -> LoginUiState.Loading
             }
 
