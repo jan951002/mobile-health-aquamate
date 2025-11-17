@@ -7,17 +7,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,9 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import com.poli.health.aquamate.onboarding.auth.presentation.model.LoginUiState
+import com.poli.health.aquamate.ui.components.AquaMatePasswordField
+import com.poli.health.aquamate.ui.components.AquaMateTextField
 import com.poli.health.aquamate.onboarding.auth.presentation.viewmodel.LoginViewModel
 import com.poli.health.aquamate.ui.theme.AquaMateDimensions
 import com.poli.health.aquamate.ui.theme.AquaMateStrings
@@ -46,7 +48,6 @@ fun LoginScreen(
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState) {
         when (val state = uiState) {
@@ -85,43 +86,24 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingXL))
 
-            OutlinedTextField(
+            AquaMateTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text(AquaMateStrings.Login.EMAIL_LABEL) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+                label = AquaMateStrings.Login.EMAIL_LABEL,
+                leadingIcon = Icons.Default.Email,
+                keyboardType = KeyboardType.Email,
                 enabled = uiState !is LoginUiState.Loading
             )
 
             Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingM))
 
-            OutlinedTextField(
+            AquaMatePasswordField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text(AquaMateStrings.Login.PASSWORD_LABEL) },
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+                label = AquaMateStrings.Login.PASSWORD_LABEL,
                 enabled = uiState !is LoginUiState.Loading,
-                trailingIcon = {
-                    TextButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Text(
-                            text = if (passwordVisible) {
-                                AquaMateStrings.Login.HIDE_PASSWORD
-                            } else {
-                                AquaMateStrings.Login.SHOW_PASSWORD
-                            },
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                }
+                showPasswordLabel = AquaMateStrings.Login.SHOW_PASSWORD,
+                hidePasswordLabel = AquaMateStrings.Login.HIDE_PASSWORD
             )
 
             Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingL))
@@ -134,6 +116,11 @@ fun LoginScreen(
                 if (uiState is LoginUiState.Loading) {
                     CircularProgressIndicator()
                 } else {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Login,
+                        contentDescription = "Login icon"
+                    )
+                    Spacer(modifier = Modifier.width(AquaMateDimensions.SpacingXS))
                     Text(AquaMateStrings.Login.SIGN_IN_BUTTON)
                 }
             }
