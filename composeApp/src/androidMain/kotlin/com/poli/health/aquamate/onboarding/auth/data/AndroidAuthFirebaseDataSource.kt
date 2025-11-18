@@ -58,6 +58,34 @@ internal class AndroidAuthFirebaseDataSource(
         }
     }
 
+    override suspend fun signUpWithEmail(
+        email: String,
+        password: String
+    ): LoginResult = withContext(ioDispatcher) {
+        try {
+            val authResult = firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .await()
+
+            val firebaseUser = authResult.user
+                ?: return@withContext LoginResult.Error(
+                    message = "User not created"
+                )
+
+            LoginResult.Success(user = firebaseUser.toAuthUser())
+        } catch (e: FirebaseAuthException) {
+            LoginResult.Error(
+                message = errorHandler.getErrorMessage(e),
+                cause = e
+            )
+        } catch (e: Exception) {
+            LoginResult.Error(
+                message = "Unexpected error: ${e.message}",
+                cause = e
+            )
+        }
+    }
+
     override suspend fun signOut() = withContext(ioDispatcher) {
         firebaseAuth.signOut()
     }

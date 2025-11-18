@@ -10,6 +10,8 @@ internal interface AuthRemoteDataSource {
 
     suspend fun signInWithEmail(email: String, password: String): LoginResult
 
+    suspend fun signUpWithEmail(email: String, password: String): LoginResult
+
     suspend fun signOut()
 
     suspend fun getCurrentUser(): AuthUser?

@@ -12,6 +12,8 @@ import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignInWithEmailUs
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignInWithEmailUseCaseImpl
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignOutUseCase
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignOutUseCaseImpl
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignUpWithEmailUseCase
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignUpWithEmailUseCaseImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -29,6 +31,13 @@ val authDomainModule: Module = module {
 
     factory<SignInWithEmailUseCase> {
         SignInWithEmailUseCaseImpl(
+            loginRepository = get(),
+            authStateMapper = get()
+        )
+    }
+
+    factory<SignUpWithEmailUseCase> {
+        SignUpWithEmailUseCaseImpl(
             loginRepository = get(),
             authStateMapper = get()
         )

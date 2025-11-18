@@ -74,6 +74,44 @@ internal class IOSAuthFirebaseDataSource(
         }
     }
 
+    override suspend fun signUpWithEmail(
+        email: String,
+        password: String
+    ): LoginResult = withContext(ioDispatcher) {
+        suspendCancellableCoroutine { continuation ->
+            firebaseAuth.createUserWithEmail(
+                email = email,
+                password = password,
+                completion = { authResult: FIRAuthDataResult?, error: NSError? ->
+                    when {
+                        error != null -> {
+                            continuation.resume(
+                                LoginResult.Error(
+                                    message = errorHandler.getErrorMessage(error),
+                                    cause = Exception(error.localizedDescription ?: "Unknown error")
+                                )
+                            )
+                        }
+                        authResult?.user() == null -> {
+                            continuation.resume(
+                                LoginResult.Error(
+                                    message = "User not created"
+                                )
+                            )
+                        }
+                        else -> {
+                            continuation.resume(
+                                LoginResult.Success(
+                                    user = authResult.user()!!.toAuthUser()
+                                )
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    }
+
     override suspend fun signOut(): Unit = withContext(ioDispatcher) {
         val errorPtr = null
         firebaseAuth.signOut(errorPtr)

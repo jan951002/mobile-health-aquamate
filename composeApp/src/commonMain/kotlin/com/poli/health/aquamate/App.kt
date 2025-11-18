@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.poli.health.aquamate.framework.platformModule
 import com.poli.health.aquamate.onboarding.auth.di.authModule
-import com.poli.health.aquamate.onboarding.auth.presentation.screen.LoginScreen
+import com.poli.health.aquamate.onboarding.auth.presentation.screen.AuthScreen
 import com.poli.health.aquamate.ui.theme.AquaMateTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
@@ -27,9 +27,9 @@ fun App() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                LoginScreen(
-                    onLoginSuccess = {
-                        println("Logged with emailλ")
+                AuthScreen(
+                    onAuthSuccess = {
+                        println("Authenticated successfully")
                     }
                 )
             }

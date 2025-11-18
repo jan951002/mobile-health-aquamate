@@ -1,4 +1,4 @@
-package com.poli.health.aquamate.ui.components
+package com.poli.health.aquamate.commons.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions

@@ -15,6 +15,11 @@ internal class LoginRepositoryImpl(
         password: String
     ): LoginResult = authRemoteDataSource.signInWithEmail(email, password)
 
+    override suspend fun signUpWithEmail(
+        email: String,
+        password: String
+    ): LoginResult = authRemoteDataSource.signUpWithEmail(email, password)
+
     override suspend fun signOut() {
         authRemoteDataSource.signOut()
     }
