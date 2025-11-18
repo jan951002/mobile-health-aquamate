@@ -4,6 +4,8 @@ import com.poli.health.aquamate.onboarding.auth.domain.mapper.AuthStateMapper
 import com.poli.health.aquamate.onboarding.auth.domain.mapper.AuthStateMapperImpl
 import com.poli.health.aquamate.onboarding.auth.domain.mapper.UserMapper
 import com.poli.health.aquamate.onboarding.auth.domain.mapper.UserMapperImpl
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.GetCurrentUserIdUseCase
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.GetCurrentUserIdUseCaseImpl
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.IsUserLoggedInUseCase
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.IsUserLoggedInUseCaseImpl
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.ObserveAuthStateUseCase
@@ -31,34 +33,40 @@ val authDomainModule: Module = module {
 
     factory<SignInWithEmailUseCase> {
         SignInWithEmailUseCaseImpl(
-            loginRepository = get(),
+            authRepository = get(),
             authStateMapper = get()
         )
     }
 
     factory<SignUpWithEmailUseCase> {
         SignUpWithEmailUseCaseImpl(
-            loginRepository = get(),
+            authRepository = get(),
             authStateMapper = get()
         )
     }
 
     factory<ObserveAuthStateUseCase> {
         ObserveAuthStateUseCaseImpl(
-            loginRepository = get(),
+            authRepository = get(),
             authStateMapper = get()
         )
     }
 
     factory<SignOutUseCase> {
         SignOutUseCaseImpl(
-            loginRepository = get()
+            authRepository = get()
         )
     }
 
     factory<IsUserLoggedInUseCase> {
         IsUserLoggedInUseCaseImpl(
-            loginRepository = get()
+            authRepository = get()
+        )
+    }
+
+    factory<GetCurrentUserIdUseCase> {
+        GetCurrentUserIdUseCaseImpl(
+            authRepository = get()
         )
     }
 }

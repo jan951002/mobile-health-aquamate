@@ -1,12 +1,11 @@
 package com.poli.health.aquamate.onboarding.auth.domain.usecase
 
 import com.poli.health.aquamate.onboarding.auth.data.repository.AuthRepository
+import kotlinx.coroutines.flow.Flow
 
-internal class SignOutUseCaseImpl(
+internal class GetCurrentUserIdUseCaseImpl(
     private val authRepository: AuthRepository
-) : SignOutUseCase {
+) : GetCurrentUserIdUseCase {
 
-    override suspend fun invoke() {
-        authRepository.signOut()
-    }
+    override fun invoke(): Flow<String?> = authRepository.getCurrentUserId()
 }

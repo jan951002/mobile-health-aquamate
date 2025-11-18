@@ -5,34 +5,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.poli.health.aquamate.framework.platformModule
-import com.poli.health.aquamate.onboarding.auth.di.authModule
 import com.poli.health.aquamate.onboarding.auth.presentation.screen.AuthScreen
 import com.poli.health.aquamate.ui.theme.AquaMateTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.KoinApplication
 
 @Composable
 @Preview
 fun App() {
-    KoinApplication(application = {
-
-        modules(
-            platformModule,
-            authModule
-        )
-    }) {
-        AquaMateTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                AuthScreen(
-                    onAuthSuccess = {
-                        println("Authenticated successfully")
-                    }
-                )
-            }
+    AquaMateTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            AuthScreen(
+                onAuthSuccess = {
+                    println("Authenticated successfully")
+                }
+            )
         }
     }
 }
