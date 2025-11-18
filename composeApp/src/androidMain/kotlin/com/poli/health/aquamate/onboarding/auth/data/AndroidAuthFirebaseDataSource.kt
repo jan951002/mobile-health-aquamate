@@ -21,9 +21,8 @@ internal class AndroidAuthFirebaseDataSource(
 
     override val authState: Flow<LoginResult?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
-            val result = auth.currentUser?.toAuthUser()?.let { authUser ->
-                LoginResult.Success(user = authUser)
-            }
+            val authUser = auth.currentUser?.toAuthUser()
+            val result = authUser?.let { LoginResult.Success(user = it) }
             trySend(result)
         }
         firebaseAuth.addAuthStateListener(listener)
@@ -44,7 +43,12 @@ internal class AndroidAuthFirebaseDataSource(
                     message = "User not found after login"
                 )
 
-            LoginResult.Success(user = firebaseUser.toAuthUser())
+            val authUser = firebaseUser.toAuthUser()
+                ?: return@withContext LoginResult.Error(
+                    message = "Invalid user data received from Firebase"
+                )
+
+            LoginResult.Success(user = authUser)
         } catch (e: FirebaseAuthException) {
             LoginResult.Error(
                 message = errorHandler.getErrorMessage(e),
@@ -72,7 +76,12 @@ internal class AndroidAuthFirebaseDataSource(
                     message = "User not created"
                 )
 
-            LoginResult.Success(user = firebaseUser.toAuthUser())
+            val authUser = firebaseUser.toAuthUser()
+                ?: return@withContext LoginResult.Error(
+                    message = "Invalid user data received from Firebase"
+                )
+
+            LoginResult.Success(user = authUser)
         } catch (e: FirebaseAuthException) {
             LoginResult.Error(
                 message = errorHandler.getErrorMessage(e),
@@ -94,8 +103,12 @@ internal class AndroidAuthFirebaseDataSource(
         firebaseAuth.currentUser?.toAuthUser()
     }
 
-    private fun FirebaseUser.toAuthUser(): AuthUser = AuthUser(
-        uid = this.uid,
-        email = this.email
-    )
+    private fun FirebaseUser.toAuthUser(): AuthUser? {
+        if (this.uid.isEmpty()) return null
+
+        return AuthUser(
+            uid = this.uid,
+            email = this.email
+        )
+    }
 }

@@ -26,9 +26,8 @@ internal class IOSAuthFirebaseDataSource(
 
     override val authState: Flow<LoginResult?> = callbackFlow {
         val handle = firebaseAuth.addAuthStateDidChangeListener { _, user ->
-            val result = user?.toAuthUser()?.let { authUser ->
-                LoginResult.Success(user = authUser)
-            }
+            val authUser = user?.toAuthUser()
+            val result = authUser?.let { LoginResult.Success(user = it) }
             trySend(result)
         }
         awaitClose {
@@ -54,6 +53,7 @@ internal class IOSAuthFirebaseDataSource(
                                 )
                             )
                         }
+
                         authResult?.user() == null -> {
                             continuation.resume(
                                 LoginResult.Error(
@@ -61,12 +61,20 @@ internal class IOSAuthFirebaseDataSource(
                                 )
                             )
                         }
+
                         else -> {
-                            continuation.resume(
-                                LoginResult.Success(
-                                    user = authResult.user()!!.toAuthUser()
+                            val authUser = authResult.user()?.toAuthUser()
+                            if (authUser == null) {
+                                continuation.resume(
+                                    LoginResult.Error(
+                                        message = "Invalid user data received from Firebase"
+                                    )
                                 )
-                            )
+                            } else {
+                                continuation.resume(
+                                    LoginResult.Success(user = authUser)
+                                )
+                            }
                         }
                     }
                 }
@@ -92,6 +100,7 @@ internal class IOSAuthFirebaseDataSource(
                                 )
                             )
                         }
+
                         authResult?.user() == null -> {
                             continuation.resume(
                                 LoginResult.Error(
@@ -99,12 +108,20 @@ internal class IOSAuthFirebaseDataSource(
                                 )
                             )
                         }
+
                         else -> {
-                            continuation.resume(
-                                LoginResult.Success(
-                                    user = authResult.user()!!.toAuthUser()
+                            val authUser = authResult.user()?.toAuthUser()
+                            if (authUser == null) {
+                                continuation.resume(
+                                    LoginResult.Error(
+                                        message = "Invalid user data received from Firebase"
+                                    )
                                 )
-                            )
+                            } else {
+                                continuation.resume(
+                                    LoginResult.Success(user = authUser)
+                                )
+                            }
                         }
                     }
                 }
@@ -122,10 +139,10 @@ internal class IOSAuthFirebaseDataSource(
         firebaseAuth.currentUser()?.toAuthUser()
     }
 
-    private fun FIRUser.toAuthUser(): AuthUser {
+    private fun FIRUser.toAuthUser(): AuthUser? {
         val userId = this.uid()
-        require(!userId.isNullOrEmpty()) { "Firebase user UID cannot be null or empty" }
-        
+        if (userId.isNullOrEmpty()) return null
+
         return AuthUser(
             uid = userId,
             email = this.email()
