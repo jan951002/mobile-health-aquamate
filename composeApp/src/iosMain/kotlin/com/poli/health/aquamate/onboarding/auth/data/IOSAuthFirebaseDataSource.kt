@@ -123,8 +123,11 @@ internal class IOSAuthFirebaseDataSource(
     }
 
     private fun FIRUser.toAuthUser(): AuthUser {
+        val userId = this.uid()
+        require(!userId.isNullOrEmpty()) { "Firebase user UID cannot be null or empty" }
+        
         return AuthUser(
-            uid = this.uid() ?: "",
+            uid = userId,
             email = this.email()
         )
     }
