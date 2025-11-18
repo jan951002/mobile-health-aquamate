@@ -24,6 +24,8 @@ class AuthViewModel(
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
 
     fun onSignIn(email: String, password: String) {
+        if (_uiState.value is AuthUiState.Authenticating) return
+
         _uiState.value = AuthUiState.Authenticating
 
         viewModelScope.launch(ioDispatcher) {
@@ -43,6 +45,8 @@ class AuthViewModel(
     }
 
     fun onSignUp(email: String, password: String) {
+        if (_uiState.value is AuthUiState.Authenticating) return
+
         _uiState.value = AuthUiState.Authenticating
 
         viewModelScope.launch(ioDispatcher) {
