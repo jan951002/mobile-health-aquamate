@@ -37,6 +37,8 @@ kotlin {
             implementation(libs.koin.android)
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.auth)
+            implementation(libs.androidx.security.crypto)
+            implementation(libs.androidx.datastore.preferences.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -52,6 +54,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
+            implementation(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
