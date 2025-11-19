@@ -1,0 +1,9 @@
+<resources>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_subtitle">Configuraciones</string>
+    <string name="profile">Perfil</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="language">Idioma</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="save">Guardar</string>
+</resources>
