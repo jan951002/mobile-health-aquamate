@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kotlin.cocoapods)
 }
 
 kotlin {
@@ -37,6 +36,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
             implementation(libs.androidx.security.crypto)
             implementation(libs.androidx.datastore.preferences.android)
         }
@@ -55,29 +55,13 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
             implementation(libs.androidx.datastore.preferences)
+
+            implementation(libs.gitlive.firebase.app)
+            implementation(libs.gitlive.firebase.auth)
+            implementation(libs.gitlive.firebase.firestore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-    }
-
-    cocoapods {
-        version = "1.0.0"
-        ios.deploymentTarget = "26.0"
-        summary = "Aquamate app"
-        homepage = "https://temporally-unsite.dev"
-
-        framework {
-            baseName = "composeApp"
-            isStatic = true
-        }
-
-        pod("FirebaseCore") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-
-        pod("FirebaseAuth") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
         }
     }
 }
