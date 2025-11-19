@@ -3,6 +3,8 @@ package com.poli.health.aquamate
 import android.app.Application
 import com.poli.health.aquamate.framework.platformModule
 import com.poli.health.aquamate.onboarding.auth.di.authModule
+// TODO: Descomentar cuando implementes el módulo userSetup
+// import com.poli.health.aquamate.onboarding.usersetup.di.userSetupModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -19,6 +21,8 @@ class AquaMateApplication : Application() {
             modules(
                 platformModule,
                 authModule
+                // TODO: Descomentar cuando implementes userSetupModule
+                // userSetupModule
             )
         }
     }

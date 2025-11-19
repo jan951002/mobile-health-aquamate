@@ -1,10 +1,10 @@
 import SwiftUI
-import composeApp
+import FirebaseCore
 
 @main
 struct iOSApp: App {
     init() {
-        FirebaseInitializerKt.doInit()
+        FirebaseApp.configure()
     }
 
     var body: some Scene {

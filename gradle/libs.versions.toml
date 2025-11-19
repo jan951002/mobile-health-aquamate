@@ -17,6 +17,7 @@ kotlin = "2.2.20"
 koinCore = "4.1.0"
 firebase = "33.5.1"
 gservices = "4.4.3"
+gitlive-firebase = "2.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -44,9 +45,15 @@ androidx-datastore-preferences-android = { module = "androidx.datastore:datastor
 #Security
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "androidx-security" }
 
-#Firebase
+#Firebase Android
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
+
+#GitLive Firebase KMP
+gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitlive-firebase" }
+gitlive-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive-firebase" }
+gitlive-firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "gitlive-firebase" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
