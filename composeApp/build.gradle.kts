@@ -55,8 +55,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
             implementation(libs.androidx.datastore.preferences)
-            
-            // GitLive Firebase KMP
+
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.auth)
             implementation(libs.gitlive.firebase.firestore)
