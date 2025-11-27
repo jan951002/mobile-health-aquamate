@@ -9,3 +9,4 @@
 - Implemented firebase from gitlive. This tool allows use firebase features.
 - Implemented screen of measure daily
 - Implemented navigation in auth y measure daily screens
+- Unify logic to inject dependencies modules in Android and iOS
