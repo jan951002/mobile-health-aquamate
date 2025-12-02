@@ -56,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.poli.health.aquamate.commons.presentation.components.AquaMateButton
 import com.poli.health.aquamate.onboarding.profile.domain.model.ActivityLevel
+import com.poli.health.aquamate.ui.theme.AquaMateDimensions
 import com.poli.health.aquamate.onboarding.profile.domain.model.Gender
 import com.poli.health.aquamate.onboarding.profile.presentation.components.ProfileDateField
 import com.poli.health.aquamate.onboarding.profile.presentation.components.ProfileSectionHeader
@@ -102,7 +103,7 @@ fun UserProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .padding(horizontal = AquaMateDimensions.SpacingL, vertical = AquaMateDimensions.SpacingM)
                 .verticalScroll(rememberScrollState())
                 .pointerInput(Unit) {
                     detectTapGestures(onTap = {
@@ -111,7 +112,7 @@ fun UserProfileScreen(
                 },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingS))
 
             Text(
                 text = AquaMateStrings.Profile.TITLE,
@@ -121,31 +122,31 @@ fun UserProfileScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingS))
 
             Text(
                 text = AquaMateStrings.Profile.SUBTITLE,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = AquaMateDimensions.SpacingM)
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingXL))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = AquaMateDimensions.ElevationNone)
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(AquaMateDimensions.CardPadding)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AquaMateDimensions.SpacingMS)
                     ) {
                         ProfileTextField(
                             value = state.weight,
@@ -178,7 +179,7 @@ fun UserProfileScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingM))
 
                     ProfileDateField(
                         selectedDate = state.birthDate,
@@ -190,7 +191,7 @@ fun UserProfileScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingL))
 
             ProfileSectionHeader(
                 title = AquaMateStrings.Profile.GENDER_TITLE,
@@ -198,7 +199,7 @@ fun UserProfileScreen(
                 modifier = Modifier.align(Alignment.Start)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingMS))
 
             Row(
                 modifier = Modifier
@@ -217,20 +218,20 @@ fun UserProfileScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingL))
             ProfileSectionHeader(
                 title = AquaMateStrings.Profile.ACTIVITY_LEVEL_TITLE,
                 icon = Icons.AutoMirrored.Filled.DirectionsRun,
                 modifier = Modifier.align(Alignment.Start)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingMS))
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .selectableGroup(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(AquaMateDimensions.SpacingS)
             ) {
                 ActivityLevel.entries.forEach { level ->
                     ActivityLevelCard(
@@ -243,17 +244,17 @@ fun UserProfileScreen(
             }
 
             if (state.dailyWaterGoalPreview > 0) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingL))
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = AquaMateDimensions.ElevationLow)
                 ) {
                     Column(
-                        modifier = Modifier.padding(20.dp)
+                        modifier = Modifier.padding(AquaMateDimensions.CardPadding)
                     ) {
                         Text(
                             text = AquaMateStrings.Profile.DAILY_GOALS_TITLE,
@@ -264,7 +265,7 @@ fun UserProfileScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingM))
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -284,18 +285,18 @@ fun UserProfileScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingXL))
 
             AquaMateButton(
                 text = AquaMateStrings.Profile.SAVE_PROFILE_BUTTON,
                 onClick = { viewModel.onEvent(UserProfileEvent.OnSaveProfile) },
-                modifier = Modifier.height(56.dp),
+                modifier = Modifier.height(AquaMateDimensions.FabSize),
                 enabled = !state.isLoading,
                 isLoading = state.isLoading,
                 leadingIcon = Icons.Filled.Save
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingL))
         }
     }
 }
@@ -310,7 +311,7 @@ private fun GenderCard(
 ) {
     OutlinedCard(
         onClick = onSelect,
-        modifier = modifier.height(100.dp),
+        modifier = modifier.height(AquaMateDimensions.StatCardMinHeight),
         enabled = enabled,
         colors = CardDefaults.outlinedCardColors(
             containerColor = if (selected) {
@@ -320,7 +321,7 @@ private fun GenderCard(
             }
         ),
         border = BorderStroke(
-            width = if (selected) 2.dp else 1.dp,
+            width = if (selected) AquaMateDimensions.BorderWidthThick else AquaMateDimensions.BorderWidthThin,
             color = if (selected) {
                 MaterialTheme.colorScheme.primary
             } else {
@@ -331,7 +332,7 @@ private fun GenderCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(AquaMateDimensions.CardPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -341,7 +342,7 @@ private fun GenderCard(
                     Gender.FEMALE -> Icons.Filled.Female
                 },
                 contentDescription = null,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(AquaMateDimensions.IconSizeL),
                 tint = if (selected) {
                     MaterialTheme.colorScheme.primary
                 } else {
@@ -349,7 +350,7 @@ private fun GenderCard(
                 }
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingS))
 
             Text(
                 text = when (gender) {
@@ -387,7 +388,7 @@ private fun ActivityLevelCard(
             }
         ),
         border = BorderStroke(
-            width = if (selected) 2.dp else 1.dp,
+            width = if (selected) AquaMateDimensions.BorderWidthThick else AquaMateDimensions.BorderWidthThin,
             color = if (selected) {
                 MaterialTheme.colorScheme.primary
             } else {
@@ -398,7 +399,7 @@ private fun ActivityLevelCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(AquaMateDimensions.CardPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
@@ -407,7 +408,7 @@ private fun ActivityLevelCard(
                 enabled = enabled
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(AquaMateDimensions.SpacingMS))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -425,7 +426,7 @@ private fun ActivityLevelCard(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(AquaMateDimensions.SpacingXS))
 
                 Text(
                     text = when (level) {

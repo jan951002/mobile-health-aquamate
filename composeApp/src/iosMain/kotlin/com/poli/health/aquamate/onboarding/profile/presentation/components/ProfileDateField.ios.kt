@@ -29,6 +29,7 @@ import kotlin.time.ExperimentalTime
 import platform.Foundation.NSCalendar
 import platform.Foundation.NSDateComponents
 import platform.Foundation.timeIntervalSince1970
+import platform.Foundation.NSDate
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
 
@@ -95,17 +96,27 @@ actual fun ProfileDateField(
                         factory = {
                             val picker = UIDatePicker()
                             picker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
+                            
+                            val currentDate = NSCalendar.currentCalendar.dateByAddingUnit(
+                                unit = platform.Foundation.NSCalendarUnitYear,
+                                value = -18,
+                                toDate = platform.Foundation.NSDate(),
+                                options = 0u
+                            )
+                            currentDate?.let { maxDate ->
+                                picker.maximumDate = maxDate
+                            }
 
-                                selectedDate?.let { currentBirthDate ->
-                                    val dateComponents = NSDateComponents().apply {
-                                        year = currentBirthDate.year.toLong()
-                                        month = currentBirthDate.monthNumber.toLong()
-                                        day = currentBirthDate.dayOfMonth.toLong()
-                                    }
-                                    NSCalendar.currentCalendar.dateFromComponents(dateComponents)?.let { initialDate ->
-                                        picker.setDate(initialDate)
-                                    }
+                            selectedDate?.let { currentBirthDate ->
+                                val dateComponents = NSDateComponents().apply {
+                                    year = currentBirthDate.year.toLong()
+                                    month = currentBirthDate.monthNumber.toLong()
+                                    day = currentBirthDate.dayOfMonth.toLong()
                                 }
+                                NSCalendar.currentCalendar.dateFromComponents(dateComponents)?.let { initialDate ->
+                                    picker.setDate(initialDate)
+                                }
+                            }
                             picker
                         },
                         update = { datePicker ->
