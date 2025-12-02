@@ -25,6 +25,8 @@ object AquaMateStrings {
 
     object Intake {
         const val TITLE = "Water Tracker"
+        const val GREETING = "Hi!"
+        const val LOGOUT = "Logout"
         const val REGISTER_TITLE = "Register your intake"
         const val REGISTER_BUTTON = "Register"
         const val VOLUME_LABEL = "Volume"
@@ -65,6 +67,13 @@ object AquaMateStrings {
         const val RECORD_DELETED = "Record deleted successfully"
         const val VOLUME_REGISTERED = "ml registered successfully!"
         const val INTAKE_DELETED = "Intake deleted"
+        
+        const val ERROR_USER_NOT_LOGGED_IN = "User not logged in"
+        const val ERROR_LOADING_DATE = "Error loading date"
+        const val ERROR_LOADING_STATS = "Error loading stats"
+        const val ERROR_SIGNING_OUT = "Error signing out"
+        const val NO_INTAKE_TO_DELETE = "No intake to delete"
+        const val INTAKE_DELETED_SUCCESS = "Intake deleted successfully"
     }
 
     object Profile {

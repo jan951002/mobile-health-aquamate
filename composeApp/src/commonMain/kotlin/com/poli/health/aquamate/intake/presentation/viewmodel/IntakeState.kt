@@ -19,6 +19,7 @@ data class IntakeState(
     val weeklyStats: WeeklyStats? = null,
     val isLoading: Boolean = false,
     val isLoadingStats: Boolean = false,
+    val isLoggedOut: Boolean = false,
     val error: String? = null,
     val successMessage: String? = null
 )

@@ -9,6 +9,8 @@ import com.poli.health.aquamate.intake.domain.usecase.GetWeeklyStatsUseCase
 import com.poli.health.aquamate.intake.domain.usecase.RegisterWaterIntakeUseCase
 import com.poli.health.aquamate.intake.presentation.model.IntakeEvent
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.GetCurrentUserIdUseCase
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignOutUseCase
+import com.poli.health.aquamate.ui.theme.AquaMateStrings
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +29,8 @@ class IntakeViewModel(
     private val getUserDailyGoalUseCase: GetUserDailyGoalUseCase,
     private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase,
     private val deleteIntakeByIdUseCase: DeleteIntakeByIdUseCase,
-    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(IntakeState())
     val state: StateFlow<IntakeState> = _state.asStateFlow()
@@ -53,6 +56,7 @@ class IntakeViewModel(
             is IntakeEvent.DeleteIntake -> deleteIntake(event.intakeId)
             is IntakeEvent.LoadWeeklyStats -> loadWeeklyStats()
             is IntakeEvent.DeleteLastIntake -> deleteLastIntake()
+            is IntakeEvent.Logout -> logout()
             is IntakeEvent.ClearError -> clearError()
             is IntakeEvent.ClearSuccess -> clearSuccess()
         }
@@ -64,7 +68,7 @@ class IntakeViewModel(
 
             try {
                 val userId = getCurrentUserIdUseCase().first()
-                    ?: throw IllegalStateException("User not logged in")
+                    ?: throw IllegalStateException(AquaMateStrings.Intake.ERROR_USER_NOT_LOGGED_IN)
 
                 val dailyGoal = getUserDailyGoalUseCase(userId)
                 val today = Clock.System.now()
@@ -91,7 +95,7 @@ class IntakeViewModel(
             } catch (e: Exception) {
                 _state.update {
                     it.copy(
-                        error = "Error loading data: ${e.message}",
+                        error = "${AquaMateStrings.Intake.ERROR_LOADING_DATA}: ${e.message}",
                         isLoading = false
                     )
                 }
@@ -105,7 +109,7 @@ class IntakeViewModel(
 
             try {
                 val userId = getCurrentUserIdUseCase().first()
-                    ?: throw IllegalStateException("User not logged in")
+                    ?: throw IllegalStateException(AquaMateStrings.Intake.ERROR_USER_NOT_LOGGED_IN)
                 val dailyGoal = _state.value.dailyGoalMl
 
                 registerWaterIntakeUseCase(volumeMl, userId, dailyGoal)
@@ -127,14 +131,15 @@ class IntakeViewModel(
                                 weeklyStats = updatedWeeklyStats,
                                 progressPercentage = progressPercentage,
                                 isLoading = false,
-                                successMessage = "${volumeMl}ml registered successfully"
+                                successMessage = "${volumeMl}${AquaMateStrings.Intake.VOLUME_REGISTERED}"
                             )
                         }
                     }
                     .onFailure { error ->
                         _state.update {
                             it.copy(
-                                error = error.message ?: "Error registering intake",
+                                error = error.message
+                                    ?: AquaMateStrings.Intake.ERROR_REGISTERING_INTAKE,
                                 isLoading = false
                             )
                         }
@@ -142,7 +147,7 @@ class IntakeViewModel(
             } catch (e: Exception) {
                 _state.update {
                     it.copy(
-                        error = "Error: ${e.message}",
+                        error = "${AquaMateStrings.Intake.ERROR_REGISTERING_INTAKE}: ${e.message}",
                         isLoading = false
                     )
                 }
@@ -173,7 +178,7 @@ class IntakeViewModel(
 
             try {
                 val userId = getCurrentUserIdUseCase().first()
-                    ?: throw IllegalStateException("User not logged in")
+                    ?: throw IllegalStateException(AquaMateStrings.Intake.ERROR_USER_NOT_LOGGED_IN)
                 val dailyIntake = getDailyIntakeUseCase(userId, date)
                 val dailyGoal = _state.value.dailyGoalMl
 
@@ -193,7 +198,7 @@ class IntakeViewModel(
             } catch (e: Exception) {
                 _state.update {
                     it.copy(
-                        error = "Error loading date: ${e.message}",
+                        error = "${AquaMateStrings.Intake.ERROR_LOADING_DATE}: ${e.message}",
                         isLoading = false
                     )
                 }
@@ -207,7 +212,7 @@ class IntakeViewModel(
 
             try {
                 val userId = getCurrentUserIdUseCase().first()
-                    ?: throw IllegalStateException("User not logged in")
+                    ?: throw IllegalStateException(AquaMateStrings.Intake.ERROR_USER_NOT_LOGGED_IN)
                 val date = _state.value.selectedDate
 
                 deleteIntakeByIdUseCase(userId, date, intakeId)
@@ -228,14 +233,15 @@ class IntakeViewModel(
                                 weeklyStats = updatedWeeklyStats,
                                 progressPercentage = progressPercentage,
                                 isLoading = false,
-                                successMessage = "Intake deleted successfully"
+                                successMessage = AquaMateStrings.Intake.INTAKE_DELETED_SUCCESS
                             )
                         }
                     }
                     .onFailure { error ->
                         _state.update {
                             it.copy(
-                                error = error.message ?: "Error deleting intake",
+                                error = error.message
+                                    ?: AquaMateStrings.Intake.ERROR_DELETING_RECORD,
                                 isLoading = false
                             )
                         }
@@ -243,7 +249,7 @@ class IntakeViewModel(
             } catch (e: Exception) {
                 _state.update {
                     it.copy(
-                        error = "Error: ${e.message}",
+                        error = "${AquaMateStrings.Intake.ERROR_DELETING_RECORD}: ${e.message}",
                         isLoading = false
                     )
                 }
@@ -260,7 +266,7 @@ class IntakeViewModel(
                 deleteIntake(lastIntake.id)
             } else {
                 _state.update {
-                    it.copy(error = "No intake to delete")
+                    it.copy(error = AquaMateStrings.Intake.NO_INTAKE_TO_DELETE)
                 }
             }
         }
@@ -272,7 +278,7 @@ class IntakeViewModel(
 
             try {
                 val userId = getCurrentUserIdUseCase().first()
-                    ?: throw IllegalStateException("User not logged in")
+                    ?: throw IllegalStateException(AquaMateStrings.Intake.ERROR_USER_NOT_LOGGED_IN)
                 val weeklyStats = getWeeklyStatsUseCase(userId)
 
                 _state.update {
@@ -284,9 +290,24 @@ class IntakeViewModel(
             } catch (e: Exception) {
                 _state.update {
                     it.copy(
-                        error = "Error loading stats: ${e.message}",
+                        error = "${AquaMateStrings.Intake.ERROR_LOADING_STATS}: ${e.message}",
                         isLoadingStats = false
                     )
+                }
+            }
+        }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            try {
+                signOutUseCase()
+                _state.update {
+                    it.copy(isLoggedOut = true)
+                }
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(error = "${AquaMateStrings.Intake.ERROR_SIGNING_OUT}: ${e.message}")
                 }
             }
         }

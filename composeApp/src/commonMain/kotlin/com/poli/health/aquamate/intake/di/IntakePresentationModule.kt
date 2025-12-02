@@ -14,7 +14,8 @@ val intakePresentationModule: Module = module {
             getUserDailyGoalUseCase = get(),
             getWeeklyStatsUseCase = get(),
             deleteIntakeByIdUseCase = get(),
-            getCurrentUserIdUseCase = get()
+            getCurrentUserIdUseCase = get(),
+            signOutUseCase = get()
         )
     }
 }
