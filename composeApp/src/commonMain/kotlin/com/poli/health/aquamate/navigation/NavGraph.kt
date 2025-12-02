@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.GetCurrentUserIdUseCase
 import com.poli.health.aquamate.onboarding.auth.presentation.screen.AuthScreen
-import com.poli.health.aquamate.onboarding.auth.presentation.screen.IntakeScreen
-import com.poli.health.aquamate.onboarding.auth.presentation.viewmodel.IntakeViewModel
+import com.poli.health.aquamate.intake.presentation.screen.IntakeScreen
+import com.poli.health.aquamate.intake.presentation.viewmodel.IntakeViewModel
 import com.poli.health.aquamate.onboarding.profile.domain.usecase.HasUserProfileUseCase
 import com.poli.health.aquamate.onboarding.profile.presentation.screen.UserProfileScreen
 import org.koin.compose.koinInject
