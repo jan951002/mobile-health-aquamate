@@ -1,35 +1,74 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Aquamate Mobile Health - README
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## 📘 Overview
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Aquamate Mobile Health es una aplicación móvil desarrollada con **Kotlin Multiplatform (KMP)**, enfocada en el monitoreo y gestión de parámetros de calidad del agua. El proyecto integra un módulo compartido (shared) para la lógica central y módulos nativos para Android y iOS.
 
-### Build and Run Android Application
+## 🚀 Tecnologías principales
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+* **Kotlin Multiplatform (KMP)**
+* **Compose Multiplatform / Jetpack Compose** para Android
+* **SwiftUI** para iOS
+* **Firebase** (Auth, Firestore)
+* **Ktor** para networking
+* **Koin / inyección de dependencias**
 
-### Build and Run iOS Application
+## 📂 Estructura del Proyecto
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+```
+mobile-health-aquamate-main/
+├── shared/            // Lógica común KMP
+├── androidApp/        // Implementación Android
+├── iosApp/            // Implementación iOS
+└── buildSrc/          // Configuración de build
+```
+
+### Módulo shared
+
+Contiene:
+
+* Servicios de datos
+* Casos de uso
+* Modelos
+* Repositorios
+* Integración con Firebase
+
+### Android
+
+Implementado con Jetpack Compose, navegación declarativa y consumo del shared module.
+
+### iOS
+
+Implementado con SwiftUI, conectando ViewModels expuestos desde KMP.
+
+## 🔐 Integración con Firebase
+
+El proyecto usa:
+
+* **Firebase Auth** para autenticación
+* **Firestore** para almacenar parámetros monitoreados
+
+Archivos relevantes:
+
+* `firebase.json`
+* `firestore.rules`
+
+## ▶️ Ejecución
+
+### Android
+
+```
+./gradlew :androidApp:installDebug
+```
+
+### iOS
+
+Abrir `iosApp/` en Xcode y ejecutar.
+
+## 📄 Licencia
+
+Este proyecto se distribuye bajo la licencia especificada en el archivo `LICENSE` (si aplica).
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+Si deseas, puedo extender o agregar secciones específicas al README según tus necesidades.
