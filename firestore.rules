@@ -36,19 +36,34 @@ service cloud.firestore {
 
       // Users can create their own profile with valid data
       allow create: if isOwner(userId) && isValidUserProfile();
-      
+
       // Users can update their own profile with valid data
       allow update: if isOwner(userId) && isValidUserProfile();
-      
+
       // Users can delete their own profile
       allow delete: if isOwner(userId);
     }
 
-    // Water intake records collection
+    // Water intake v2 - Daily intake records collection
+    match /intake/{userId}/records/{date} {
+      // Users can read their own daily intake records
+      allow read: if isOwner(userId);
+
+      // Users can create their own daily intake records
+      allow create: if isOwner(userId);
+
+      // Users can update their own daily intake records
+      allow update: if isOwner(userId);
+
+      // Users can delete their own daily intake records
+      allow delete: if isOwner(userId);
+    }
+
+    // Water intake records collection (legacy v1)
     match /water_intake/{userId}/records/{recordId} {
       // Users can read their own records
       allow read: if isOwner(userId);
-      
+
       // Users can write their own records
       allow write: if isOwner(userId);
     }

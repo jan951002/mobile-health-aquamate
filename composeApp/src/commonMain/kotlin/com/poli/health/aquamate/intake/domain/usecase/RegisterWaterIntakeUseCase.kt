@@ -3,5 +3,5 @@ package com.poli.health.aquamate.intake.domain.usecase
 import com.poli.health.aquamate.intake.domain.model.WaterIntake
 
 interface RegisterWaterIntakeUseCase {
-    suspend operator fun invoke(volumeMl: Int): Result<WaterIntake>
+    suspend operator fun invoke(volumeMl: Int, userId: String, dailyGoalMl: Int): Result<WaterIntake>
 }
