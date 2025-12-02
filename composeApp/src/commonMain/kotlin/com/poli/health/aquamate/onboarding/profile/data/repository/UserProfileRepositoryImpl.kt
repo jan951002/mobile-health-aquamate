@@ -76,7 +76,22 @@ internal class UserProfileRepositoryImpl(
 
     override suspend fun hasUserProfile(userId: String): Boolean {
         val localProfile = localDataSource.getProfile().first()
-        return localProfile != null
+        if (localProfile != null) {
+            return true
+        }
+        
+        return try {
+            val remoteResult = remoteDataSource.getUserProfile(userId)
+            val remoteProfile = remoteResult.getOrNull()
+            if (remoteProfile != null) {
+                syncFromRemote(userId)
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override suspend fun syncFromRemote(userId: String): Result<Unit> {

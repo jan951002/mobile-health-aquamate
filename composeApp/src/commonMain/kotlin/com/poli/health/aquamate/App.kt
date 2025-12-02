@@ -36,18 +36,22 @@ fun App() {
             val startDestination = remember { mutableStateOf<Route?>(null) }
 
             LaunchedEffect(Unit) {
-                val isLoggedIn = isUserLoggedInUseCase()
-                startDestination.value = when {
-                    !isLoggedIn -> Route.Auth
-                    else -> {
-                        val userId = getCurrentUserIdUseCase().first()
-                        if (userId != null) {
-                            val hasProfile = hasUserProfileUseCase(userId)
-                            if (hasProfile) Route.Intake else Route.Profile
-                        } else {
-                            Route.Auth
+                try {
+                    val isLoggedIn = isUserLoggedInUseCase()
+                    startDestination.value = when {
+                        !isLoggedIn -> Route.Auth
+                        else -> {
+                            val userId = getCurrentUserIdUseCase().first()
+                            if (userId != null) {
+                                val hasProfile = hasUserProfileUseCase(userId)
+                                if (hasProfile) Route.Intake else Route.Profile
+                            } else {
+                                Route.Auth
+                            }
                         }
                     }
+                } catch (e: Exception) {
+                    startDestination.value = Route.Auth
                 }
             }
 
