@@ -69,4 +69,10 @@ val authDomainModule: Module = module {
             authRepository = get()
         )
     }
+
+    factory<com.poli.health.aquamate.onboarding.auth.domain.usecase.UpdateProfileCompleteUseCase> {
+        com.poli.health.aquamate.onboarding.auth.domain.usecase.UpdateProfileCompleteUseCaseImpl(
+            authLocalDataSource = get()
+        )
+    }
 }
