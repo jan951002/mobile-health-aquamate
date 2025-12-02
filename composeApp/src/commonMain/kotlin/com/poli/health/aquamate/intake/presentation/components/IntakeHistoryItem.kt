@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,11 +18,13 @@ import androidx.compose.ui.Modifier
 import com.poli.health.aquamate.intake.domain.model.WaterIntake
 import com.poli.health.aquamate.ui.theme.AquaMateStrings
 import com.poli.health.aquamate.ui.theme.dimensions
+import com.poli.health.aquamate.ui.theme.extendedColors
 
 @Composable
 internal fun IntakeHistoryItem(
     intake: WaterIntake,
     onDeleteClick: () -> Unit,
+    isToday: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -31,7 +34,11 @@ internal fun IntakeHistoryItem(
     ) {
         IntakeInfo(intake = intake)
 
-        DeleteButton(onClick = onDeleteClick)
+        if (isToday) {
+            DeleteButton(onClick = onDeleteClick)
+        } else {
+            CheckButton()
+        }
     }
 }
 
@@ -76,6 +83,18 @@ private fun DeleteButton(onClick: () -> Unit) {
             contentDescription = AquaMateStrings.Intake.DELETE_CONFIRMATION,
             modifier = Modifier.size(MaterialTheme.dimensions.IconSizeS),
             tint = MaterialTheme.colorScheme.error
+        )
+    }
+}
+
+@Composable
+private fun CheckButton() {
+    IconButton(onClick = { }) {
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = "Completed intake",
+            modifier = Modifier.size(MaterialTheme.dimensions.IconSizeS),
+            tint = MaterialTheme.extendedColors.success
         )
     }
 }

@@ -25,6 +25,8 @@ object AquaMateStrings {
 
     object Intake {
         const val TITLE = "Water Tracker"
+        const val GREETING = "Hi aqua buddy!"
+        const val LOGOUT = "Logout"
         const val REGISTER_TITLE = "Register your intake"
         const val REGISTER_BUTTON = "Register"
         const val VOLUME_LABEL = "Volume"

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Card
@@ -18,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -56,7 +58,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun IntakeScreen(
     state: IntakeState = IntakeState(),
-    onEvent: (IntakeEvent) -> Unit = {}
+    onEvent: (IntakeEvent) -> Unit = {},
+    onLogout: () -> Unit = {}
 ) {
     val today = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -77,18 +80,35 @@ fun IntakeScreen(
         }
     }
 
+    LaunchedEffect(state.isLoggedOut) {
+        if (state.isLoggedOut) {
+            onLogout()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = AquaMateStrings.Intake.TITLE,
-                        style = MaterialTheme.typography.titleLarge
+                        text = AquaMateStrings.Intake.GREETING,
+                        style = MaterialTheme.typography.titleMedium
                     )
+                },
+                actions = {
+                    IconButton(
+                        onClick = { onEvent(IntakeEvent.Logout) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = AquaMateStrings.Intake.LOGOUT
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
@@ -187,7 +207,8 @@ private fun IntakeContent(
             intakes = state.dailyIntake?.intakes ?: emptyList(),
             onDeleteIntake = { intakeId ->
                 onEvent(IntakeEvent.DeleteIntake(intakeId))
-            }
+            },
+            isToday = isToday
         )
     }
 }
@@ -235,7 +256,8 @@ private fun RegisterCard(
 @Composable
 private fun HistoryCard(
     intakes: List<com.poli.health.aquamate.intake.domain.model.WaterIntake>,
-    onDeleteIntake: (String) -> Unit
+    onDeleteIntake: (String) -> Unit,
+    isToday: Boolean
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -262,7 +284,8 @@ private fun HistoryCard(
             } else {
                 IntakeList(
                     intakes = intakes,
-                    onDeleteIntake = onDeleteIntake
+                    onDeleteIntake = onDeleteIntake,
+                    isToday = isToday
                 )
             }
         }
@@ -311,7 +334,8 @@ private fun EmptyHistoryMessage() {
 @Composable
 private fun IntakeList(
     intakes: List<com.poli.health.aquamate.intake.domain.model.WaterIntake>,
-    onDeleteIntake: (String) -> Unit
+    onDeleteIntake: (String) -> Unit,
+    isToday: Boolean
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingS)
@@ -319,7 +343,8 @@ private fun IntakeList(
         intakes.forEach { intake ->
             IntakeHistoryItem(
                 intake = intake,
-                onDeleteClick = { onDeleteIntake(intake.id) }
+                onDeleteClick = { onDeleteIntake(intake.id) },
+                isToday = isToday
             )
         }
     }

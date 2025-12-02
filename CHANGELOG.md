@@ -1,5 +1,4 @@
 # Changelog
-
 ## Version: 1.0.0
 ### Added
 - The theme that this application will use has been implemented.
@@ -13,6 +12,8 @@
 - Implement screen to user profile. This feature provides the info to calculate the daily hydration
   goal.
 - Implement intake feature v2 to use the user profile info. Also, implement improvements in the intake UI
+- Implement user logout
+- Implement UI improvements in intake screen
 
 ### Fixed
 - Decouple intake feature from onboarding.

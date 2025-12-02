@@ -13,6 +13,7 @@ sealed class IntakeEvent {
     data class DeleteIntake(val intakeId: String) : IntakeEvent()
     data object DeleteLastIntake : IntakeEvent()
     data object LoadWeeklyStats : IntakeEvent()
+    data object Logout : IntakeEvent()
     data object ClearError : IntakeEvent()
     data object ClearSuccess : IntakeEvent()
 }

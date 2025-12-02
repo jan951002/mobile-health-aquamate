@@ -72,7 +72,13 @@ fun NavGraph(
 
             IntakeScreen(
                 state = state,
-                onEvent = viewModel::onEvent
+                onEvent = viewModel::onEvent,
+                onLogout = {
+                    navController.navigate(Route.Auth) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
     }

@@ -9,6 +9,7 @@ import com.poli.health.aquamate.intake.domain.usecase.GetWeeklyStatsUseCase
 import com.poli.health.aquamate.intake.domain.usecase.RegisterWaterIntakeUseCase
 import com.poli.health.aquamate.intake.presentation.model.IntakeEvent
 import com.poli.health.aquamate.onboarding.auth.domain.usecase.GetCurrentUserIdUseCase
+import com.poli.health.aquamate.onboarding.auth.domain.usecase.SignOutUseCase
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +28,8 @@ class IntakeViewModel(
     private val getUserDailyGoalUseCase: GetUserDailyGoalUseCase,
     private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase,
     private val deleteIntakeByIdUseCase: DeleteIntakeByIdUseCase,
-    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(IntakeState())
     val state: StateFlow<IntakeState> = _state.asStateFlow()
@@ -53,6 +55,7 @@ class IntakeViewModel(
             is IntakeEvent.DeleteIntake -> deleteIntake(event.intakeId)
             is IntakeEvent.LoadWeeklyStats -> loadWeeklyStats()
             is IntakeEvent.DeleteLastIntake -> deleteLastIntake()
+            is IntakeEvent.Logout -> logout()
             is IntakeEvent.ClearError -> clearError()
             is IntakeEvent.ClearSuccess -> clearSuccess()
         }
@@ -287,6 +290,21 @@ class IntakeViewModel(
                         error = "Error loading stats: ${e.message}",
                         isLoadingStats = false
                     )
+                }
+            }
+        }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            try {
+                signOutUseCase()
+                _state.update {
+                    it.copy(isLoggedOut = true)
+                }
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(error = "Error signing out: ${e.message}")
                 }
             }
         }
