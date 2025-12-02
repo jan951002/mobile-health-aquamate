@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.poli.health.aquamate.commons.presentation.components.AquaMateButton
+import com.poli.health.aquamate.intake.domain.model.WaterIntake
 import com.poli.health.aquamate.intake.presentation.components.DailyProgressCard
 import com.poli.health.aquamate.intake.presentation.components.DateNavigator
 import com.poli.health.aquamate.intake.presentation.components.IntakeHistoryItem
@@ -90,10 +91,21 @@ fun IntakeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = AquaMateStrings.Intake.GREETING,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingXS)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.WaterDrop,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                        Text(
+                            text = AquaMateStrings.Intake.GREETING,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 },
                 actions = {
                     IconButton(
@@ -255,7 +267,7 @@ private fun RegisterCard(
 
 @Composable
 private fun HistoryCard(
-    intakes: List<com.poli.health.aquamate.intake.domain.model.WaterIntake>,
+    intakes: List<WaterIntake>,
     onDeleteIntake: (String) -> Unit,
     isToday: Boolean
 ) {
@@ -333,7 +345,7 @@ private fun EmptyHistoryMessage() {
 
 @Composable
 private fun IntakeList(
-    intakes: List<com.poli.health.aquamate.intake.domain.model.WaterIntake>,
+    intakes: List<WaterIntake>,
     onDeleteIntake: (String) -> Unit,
     isToday: Boolean
 ) {
