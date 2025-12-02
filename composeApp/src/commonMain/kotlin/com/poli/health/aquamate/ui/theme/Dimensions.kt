@@ -86,4 +86,6 @@ object AquaMateDimensions {
     val AdaptiveMarginCompact = 16.dp
     val AdaptiveMarginMedium = 24.dp
     val AdaptiveMarginExpanded = 32.dp
+
+    val DatePickerWheelsHeight = 216.dp
 }
