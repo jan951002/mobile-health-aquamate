@@ -21,7 +21,11 @@ internal class WaterIntakeRepositoryImpl(
     private val dailyIntakeMapper: DailyIntakeMapper
 ) : WaterIntakeRepository {
 
-    override suspend fun registerIntake(intake: WaterIntake, userId: String, dailyGoalMl: Int): Result<WaterIntake> {
+    override suspend fun registerIntake(
+        intake: WaterIntake,
+        userId: String,
+        dailyGoalMl: Int
+    ): Result<WaterIntake> {
         return try {
             val entity = waterIntakeMapper.toEntity(intake)
             localDataSource.insert(entity)
@@ -43,7 +47,13 @@ internal class WaterIntakeRepositoryImpl(
             )
 
             val dailyEntity = dailyIntakeMapper.toEntity(updatedDailyIntake)
-            remoteDataSource.saveDailyIntake(userId, dailyEntity)
+            val saveResult = remoteDataSource.saveDailyIntake(userId, dailyEntity)
+
+            if (saveResult.isFailure) {
+                return Result.failure(
+                    saveResult.exceptionOrNull() ?: Exception("Failed to save to Firestore")
+                )
+            }
 
             Result.success(intake)
         } catch (e: Exception) {
@@ -69,14 +79,19 @@ internal class WaterIntakeRepositoryImpl(
         val startDateString = formatDate(startDate)
         val endDateString = formatDate(endDate)
         return try {
-            val result = remoteDataSource.getDailyIntakesForRange(userId, startDateString, endDateString)
+            val result =
+                remoteDataSource.getDailyIntakesForRange(userId, startDateString, endDateString)
             result.getOrNull()?.map { dailyIntakeMapper.toDomain(it) } ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    override suspend fun deleteIntakeById(userId: String, date: LocalDate, intakeId: String): Result<Unit> {
+    override suspend fun deleteIntakeById(
+        userId: String,
+        date: LocalDate,
+        intakeId: String
+    ): Result<Unit> {
         return try {
             val dailyIntake = getDailyIntake(userId, date)
             if (dailyIntake != null) {
@@ -91,7 +106,14 @@ internal class WaterIntakeRepositoryImpl(
                     )
 
                     val dailyEntity = dailyIntakeMapper.toEntity(updatedDailyIntake)
-                    remoteDataSource.saveDailyIntake(userId, dailyEntity)
+                    val saveResult = remoteDataSource.saveDailyIntake(userId, dailyEntity)
+
+                    if (saveResult.isFailure) {
+                        return Result.failure(
+                            saveResult.exceptionOrNull()
+                                ?: Exception("Failed to delete from Firestore")
+                        )
+                    }
 
                     val entityToDelete = waterIntakeMapper.toEntity(deletedIntake)
                     localDataSource.deleteById(entityToDelete.id)

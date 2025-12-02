@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,11 +53,22 @@ internal fun WeeklyStatsCard(
 
 @Composable
 private fun StatsHeader() {
-    Text(
-        text = AquaMateStrings.Intake.WEEKLY_STATS_TITLE,
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onSurface
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingS)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ShowChart,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(MaterialTheme.dimensions.IconSizeM)
+        )
+        Text(
+            text = AquaMateStrings.Intake.WEEKLY_STATS_TITLE,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
 }
 
 @Composable

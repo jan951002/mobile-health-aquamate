@@ -34,6 +34,10 @@ internal fun DateNavigator(
     onNextDay: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val today = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val isToday = selectedDate == today
+
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -56,7 +60,8 @@ internal fun DateNavigator(
             NavigationButton(
                 onClick = onPreviousDay,
                 icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = AquaMateStrings.Intake.PREVIOUS_DAY
+                contentDescription = AquaMateStrings.Intake.PREVIOUS_DAY,
+                enabled = true
             )
 
             DateDisplay(selectedDate = selectedDate)
@@ -64,7 +69,8 @@ internal fun DateNavigator(
             NavigationButton(
                 onClick = onNextDay,
                 icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = AquaMateStrings.Intake.NEXT_DAY
+                contentDescription = AquaMateStrings.Intake.NEXT_DAY,
+                enabled = !isToday
             )
         }
     }
@@ -74,14 +80,22 @@ internal fun DateNavigator(
 private fun NavigationButton(
     onClick: () -> Unit,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
-    contentDescription: String
+    contentDescription: String,
+    enabled: Boolean
 ) {
-    IconButton(onClick = onClick) {
+    IconButton(
+        onClick = onClick,
+        enabled = enabled
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
             modifier = Modifier.size(MaterialTheme.dimensions.IconSizeL),
-            tint = MaterialTheme.colorScheme.primary
+            tint = if (enabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            }
         )
     }
 }

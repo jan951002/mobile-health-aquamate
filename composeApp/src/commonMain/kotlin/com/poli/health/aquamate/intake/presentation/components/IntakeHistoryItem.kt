@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,30 +24,21 @@ internal fun IntakeHistoryItem(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Row(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.dimensions.ListItemPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IntakeInfo(intake = intake)
+        IntakeInfo(intake = intake)
 
-            DeleteButton(onClick = onDeleteClick)
-        }
+        DeleteButton(onClick = onDeleteClick)
     }
 }
 
 @Composable
 private fun IntakeInfo(intake: WaterIntake) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingXS)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingXXS)
     ) {
         VolumeText(volumeMl = intake.volumeMl)
 
@@ -62,7 +50,7 @@ private fun IntakeInfo(intake: WaterIntake) {
 private fun VolumeText(volumeMl: Int) {
     Text(
         text = "$volumeMl ${AquaMateStrings.Intake.ML_UNIT}",
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurface
     )
 }
@@ -86,8 +74,9 @@ private fun DeleteButton(onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Delete,
             contentDescription = AquaMateStrings.Intake.DELETE_CONFIRMATION,
-            modifier = Modifier.size(MaterialTheme.dimensions.IconSizeM),
+            modifier = Modifier.size(MaterialTheme.dimensions.IconSizeS),
             tint = MaterialTheme.colorScheme.error
         )
     }
 }
+
