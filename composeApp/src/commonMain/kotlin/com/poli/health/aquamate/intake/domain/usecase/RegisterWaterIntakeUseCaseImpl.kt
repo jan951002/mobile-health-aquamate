@@ -7,11 +7,11 @@ import com.poli.health.aquamate.ui.theme.AquaMateStrings
 internal class RegisterWaterIntakeUseCaseImpl(
     private val repository: WaterIntakeRepository
 ) : RegisterWaterIntakeUseCase {
-    override suspend fun invoke(volumeMl: Int): Result<WaterIntake> {
+    override suspend fun invoke(volumeMl: Int, userId: String, dailyGoalMl: Int): Result<WaterIntake> {
         require(volumeMl > 0) { AquaMateStrings.Intake.VOLUME_MUST_BE_POSITIVE }
         require(volumeMl <= 2000) { AquaMateStrings.Intake.VOLUME_EXCEEDS_LIMIT }
 
         val intake = WaterIntake.create(volumeMl)
-        return repository.registerIntake(intake)
+        return repository.registerIntake(intake, userId, dailyGoalMl)
     }
 }

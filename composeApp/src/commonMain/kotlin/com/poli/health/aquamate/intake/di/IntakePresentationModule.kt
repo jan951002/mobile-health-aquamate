@@ -10,9 +10,11 @@ val intakePresentationModule: Module = module {
     viewModel {
         IntakeViewModel(
             registerWaterIntakeUseCase = get(),
-            getLastIntakeUseCase = get(),
-            deleteLastIntakeUseCase = get(),
-            getTodayTotalUseCase = get()
+            getDailyIntakeUseCase = get(),
+            getUserDailyGoalUseCase = get(),
+            getWeeklyStatsUseCase = get(),
+            deleteIntakeByIdUseCase = get(),
+            getCurrentUserIdUseCase = get()
         )
     }
 }

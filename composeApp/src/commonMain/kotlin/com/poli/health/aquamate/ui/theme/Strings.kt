@@ -24,14 +24,47 @@ object AquaMateStrings {
     }
 
     object Intake {
+        const val TITLE = "Water Tracker"
+        const val REGISTER_TITLE = "Register your intake"
+        const val REGISTER_BUTTON = "Register"
+        const val VOLUME_LABEL = "Volume"
+        const val ML_UNIT = "ml"
+
+        const val DAILY_GOAL = "Daily Goal"
+        const val DAILY_PROGRESS = "Daily Progress"
+        const val PROGRESS_OF = "of"
+        const val GOAL_ACHIEVED = "Goal Achieved!"
+        const val KEEP_GOING = "Keep going!"
+        const val ALMOST_THERE = "Almost there!"
+        const val GREAT_START = "Great start!"
+
+        const val HISTORY_TITLE = "Today's History"
+        const val HISTORY_EMPTY = "No intakes registered yet"
+        const val DELETE_CONFIRMATION = "Delete this intake?"
+
+        const val WEEKLY_STATS_TITLE = "Weekly Stats"
+        const val WEEKLY_AVERAGE = "Weekly Average"
+        const val DAYS_ACHIEVED = "Days with goal achieved"
+        const val DAYS_OF = "of"
+        const val DAYS_UNIT = "days"
+
+        const val TODAY = "Today"
+        const val YESTERDAY = "Yesterday"
+        const val PREVIOUS_DAY = "Previous day"
+        const val NEXT_DAY = "Next day"
+
+        const val LAST_INTAKE = "Last intake"
+        const val AT_TIME = "at"
+
         const val VOLUME_MUST_BE_POSITIVE = "Volume must be greater than 0"
         const val VOLUME_EXCEEDS_LIMIT = "Volume cannot exceed 2000ml"
         const val NO_RECORDS_TO_DELETE = "No records to delete"
         const val ERROR_LOADING_DATA = "Error loading data"
         const val ERROR_REGISTERING_INTAKE = "Error registering intake"
         const val ERROR_DELETING_RECORD = "Error deleting record"
-        const val RECORD_DELETED = "Record deleted"
-        const val VOLUME_REGISTERED = "ml registered!"
+        const val RECORD_DELETED = "Record deleted successfully"
+        const val VOLUME_REGISTERED = "ml registered successfully!"
+        const val INTAKE_DELETED = "Intake deleted"
     }
 
     object Profile {

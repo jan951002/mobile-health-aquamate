@@ -1,7 +1,6 @@
 # Changelog
 
 ## Version: 1.0.0
-
 ### Added
 - The theme that this application will use has been implemented.
 - Implemented Koin to dependency injection and Firebase with auth library.
@@ -13,6 +12,7 @@
 - Unify logic to inject dependencies modules in Android and iOS
 - Implement screen to user profile. This feature provides the info to calculate the daily hydration
   goal.
+- Implement intake feature v2 to use the user profile info. Also, implement improvements in the intake UI
 
 ### Fixed
 - Decouple intake feature from onboarding.
