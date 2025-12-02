@@ -1,6 +1,7 @@
 package com.poli.health.aquamate.onboarding.profile.presentation.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -10,6 +11,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,20 +19,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.interop.UIKitView
+import com.poli.health.aquamate.ui.theme.AquaMateStrings
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
 import platform.Foundation.NSCalendar
-import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
 import platform.Foundation.timeIntervalSince1970
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, ExperimentalTime::class)
 @Composable
 actual fun ProfileDateField(
     selectedDate: LocalDate?,
@@ -41,11 +43,20 @@ actual fun ProfileDateField(
     enabled: Boolean
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
-    var tempSelectedDate by remember(selectedDate) { mutableStateOf(selectedDate) }
+    var temporaryBirthDate by remember(selectedDate) { mutableStateOf(selectedDate) }
+    val interactionSource = remember { MutableInteractionSource() }
 
     val dateText = selectedDate?.let {
         "${it.dayOfMonth}/${it.monthNumber}/${it.year}"
     } ?: ""
+
+    val isPressed by interactionSource.collectIsPressedAsState()
+    
+    LaunchedEffect(isPressed) {
+        if (isPressed && enabled) {
+            showDatePicker = true
+        }
+    }
 
     OutlinedTextField(
         value = dateText,
@@ -64,48 +75,45 @@ actual fun ProfileDateField(
         },
         readOnly = true,
         enabled = enabled,
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(enabled = enabled) { showDatePicker = true }
+        interactionSource = interactionSource,
+        modifier = modifier.fillMaxWidth()
     )
 
     if (showDatePicker) {
         AlertDialog(
             onDismissRequest = { showDatePicker = false },
-            title = { Text(label) },
+            title = {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             text = {
                 Column {
                     UIKitView(
                         factory = {
-                            UIDatePicker().apply {
-                                datePickerMode = UIDatePickerMode.UIDatePickerModeDate
-                                preferredDatePickerStyle = platform.UIKit.UIDatePickerStyleWheels
+                            val picker = UIDatePicker()
+                            picker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
 
-                                // Set initial date
-                                selectedDate?.let { date ->
-                                    val components = NSDateComponents().apply {
-                                        year = date.year.toLong()
-                                        month = date.monthNumber.toLong()
-                                        day = date.dayOfMonth.toLong()
+                                selectedDate?.let { currentBirthDate ->
+                                    val dateComponents = NSDateComponents().apply {
+                                        year = currentBirthDate.year.toLong()
+                                        month = currentBirthDate.monthNumber.toLong()
+                                        day = currentBirthDate.dayOfMonth.toLong()
                                     }
-                                    NSCalendar.currentCalendar.dateFromComponents(components)?.let {
-                                        setDate(it)
+                                    NSCalendar.currentCalendar.dateFromComponents(dateComponents)?.let { initialDate ->
+                                        picker.setDate(initialDate)
                                     }
                                 }
-
-                                addTarget(
-                                    target = this,
-                                    action = platform.objc.sel_registerName("dateChanged"),
-                                    forControlEvents = platform.UIKit.UIControlEventValueChanged
-                                )
-                            }
+                            picker
                         },
-                        update = { picker ->
-                            val nsDate = picker.date
-                            val timeInterval = nsDate.timeIntervalSince1970
-                            val instant = Instant.fromEpochSeconds(timeInterval.toLong())
-                            val date = instant.toLocalDateTime(TimeZone.UTC).date
-                            tempSelectedDate = date
+                        update = { datePicker ->
+                            val selectedNSDate = datePicker.date
+                            val selectedTimeInterval = selectedNSDate.timeIntervalSince1970
+                            val selectedInstant = Instant.fromEpochSeconds(selectedTimeInterval.toLong())
+                            val updatedBirthDate = selectedInstant.toLocalDateTime(TimeZone.UTC).date
+                            temporaryBirthDate = updatedBirthDate
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -114,18 +122,27 @@ actual fun ProfileDateField(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        tempSelectedDate?.let { onDateSelected(it) }
+                        temporaryBirthDate?.let { finalBirthDate -> 
+                            onDateSelected(finalBirthDate) 
+                        }
                         showDatePicker = false
                     }
                 ) {
-                    Text("OK")
+                    Text(
+                        text = AquaMateStrings.Common.OK,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text(
+                        text = AquaMateStrings.Common.CANCEL,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )
     }
 }
+

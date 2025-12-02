@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cake
-import androidx.compose.material.icons.filled.DirectionsRun
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.automirrored.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Female
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Height
@@ -49,12 +49,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.poli.health.aquamate.commons.presentation.components.AquaMateButton
 import com.poli.health.aquamate.onboarding.profile.domain.model.ActivityLevel
 import com.poli.health.aquamate.onboarding.profile.domain.model.Gender
 import com.poli.health.aquamate.onboarding.profile.presentation.components.ProfileDateField
@@ -62,6 +62,7 @@ import com.poli.health.aquamate.onboarding.profile.presentation.components.Profi
 import com.poli.health.aquamate.onboarding.profile.presentation.components.ProfileTextField
 import com.poli.health.aquamate.onboarding.profile.presentation.model.UserProfileEvent
 import com.poli.health.aquamate.onboarding.profile.presentation.viewmodel.UserProfileViewModel
+import com.poli.health.aquamate.ui.theme.AquaMateStrings
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -72,8 +73,6 @@ fun UserProfileScreen(
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
-
-    // FocusRequester for height field
     val heightFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.isSaveSuccessful) {
@@ -112,11 +111,10 @@ fun UserProfileScreen(
                 },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header Section
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Tell us about yourself",
+                text = AquaMateStrings.Profile.TITLE,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -126,7 +124,7 @@ fun UserProfileScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "We'll use this information to personalize your daily hydration goal",
+                text = AquaMateStrings.Profile.SUBTITLE,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -135,7 +133,6 @@ fun UserProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Body Measurements Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -146,7 +143,6 @@ fun UserProfileScreen(
                 Column(
                     modifier = Modifier.padding(20.dp)
                 ) {
-                    // Weight and Height Row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -154,7 +150,7 @@ fun UserProfileScreen(
                         ProfileTextField(
                             value = state.weight,
                             onValueChange = { viewModel.onEvent(UserProfileEvent.OnWeightChanged(it)) },
-                            label = "Weight (kg)",
+                            label = AquaMateStrings.Profile.WEIGHT_LABEL,
                             leadingIcon = Icons.Filled.FitnessCenter,
                             keyboardType = KeyboardType.Decimal,
                             imeAction = ImeAction.Next,
@@ -168,7 +164,7 @@ fun UserProfileScreen(
                         ProfileTextField(
                             value = state.height,
                             onValueChange = { viewModel.onEvent(UserProfileEvent.OnHeightChanged(it)) },
-                            label = "Height (cm)",
+                            label = AquaMateStrings.Profile.HEIGHT_LABEL,
                             leadingIcon = Icons.Filled.Height,
                             keyboardType = KeyboardType.Decimal,
                             imeAction = ImeAction.Done,
@@ -184,11 +180,10 @@ fun UserProfileScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Date of Birth
                     ProfileDateField(
                         selectedDate = state.birthDate,
                         onDateSelected = { viewModel.onEvent(UserProfileEvent.OnBirthDateSelected(it)) },
-                        label = "Date of Birth",
+                        label = AquaMateStrings.Profile.DATE_OF_BIRTH_LABEL,
                         leadingIcon = Icons.Filled.Cake,
                         enabled = !state.isLoading
                     )
@@ -197,9 +192,8 @@ fun UserProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Gender Section
             ProfileSectionHeader(
-                title = "Gender",
+                title = AquaMateStrings.Profile.GENDER_TITLE,
                 icon = Icons.Filled.Wc,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -224,11 +218,9 @@ fun UserProfileScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-
-            // Activity Level Section
             ProfileSectionHeader(
-                title = "Activity Level",
-                icon = Icons.Filled.DirectionsRun,
+                title = AquaMateStrings.Profile.ACTIVITY_LEVEL_TITLE,
+                icon = Icons.AutoMirrored.Filled.DirectionsRun,
                 modifier = Modifier.align(Alignment.Start)
             )
 
@@ -250,14 +242,13 @@ fun UserProfileScreen(
                 }
             }
 
-            // Preview Card
             if (state.dailyWaterGoalPreview > 0) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
@@ -265,10 +256,12 @@ fun UserProfileScreen(
                         modifier = Modifier.padding(20.dp)
                     ) {
                         Text(
-                            text = "Your Daily Goals",
+                            text = AquaMateStrings.Profile.DAILY_GOALS_TITLE,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -278,12 +271,12 @@ fun UserProfileScreen(
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                             GoalMetric(
-                                label = "Water Goal",
+                                label = AquaMateStrings.Profile.WATER_GOAL_LABEL,
                                 value = "${state.dailyWaterGoalPreview} ml"
                             )
 
                             GoalMetric(
-                                label = "BMI",
+                                label = AquaMateStrings.Profile.BMI_LABEL,
                                 value = state.bmiPreview.toString().take(4)
                             )
                         }
@@ -293,27 +286,14 @@ fun UserProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Save Button
-            Button(
+            AquaMateButton(
+                text = AquaMateStrings.Profile.SAVE_PROFILE_BUTTON,
                 onClick = { viewModel.onEvent(UserProfileEvent.OnSaveProfile) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                enabled = !state.isLoading
-            ) {
-                if (state.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text(
-                        "Save Profile",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
+                modifier = Modifier.height(56.dp),
+                enabled = !state.isLoading,
+                isLoading = state.isLoading,
+                leadingIcon = Icons.Filled.Save
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -373,8 +353,8 @@ private fun GenderCard(
 
             Text(
                 text = when (gender) {
-                    Gender.MALE -> "Male"
-                    Gender.FEMALE -> "Female"
+                    Gender.MALE -> AquaMateStrings.Profile.MALE
+                    Gender.FEMALE -> AquaMateStrings.Profile.FEMALE
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
@@ -401,7 +381,7 @@ private fun ActivityLevelCard(
         enabled = enabled,
         colors = CardDefaults.outlinedCardColors(
             containerColor = if (selected) {
-                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                MaterialTheme.colorScheme.primaryContainer
             } else {
                 MaterialTheme.colorScheme.surface
             }
@@ -409,7 +389,7 @@ private fun ActivityLevelCard(
         border = BorderStroke(
             width = if (selected) 2.dp else 1.dp,
             color = if (selected) {
-                MaterialTheme.colorScheme.secondary
+                MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
             }
@@ -432,24 +412,33 @@ private fun ActivityLevelCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = when (level) {
-                        ActivityLevel.SEDENTARY -> "Sedentary"
-                        ActivityLevel.MODERATE -> "Moderate"
-                        ActivityLevel.INTENSE -> "Intense"
+                        ActivityLevel.SEDENTARY -> AquaMateStrings.Profile.SEDENTARY
+                        ActivityLevel.MODERATE -> AquaMateStrings.Profile.MODERATE
+                        ActivityLevel.INTENSE -> AquaMateStrings.Profile.INTENSE
                     },
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = when (level) {
-                        ActivityLevel.SEDENTARY -> "Little to no exercise"
-                        ActivityLevel.MODERATE -> "Exercise 3-5 days/week"
-                        ActivityLevel.INTENSE -> "Intense exercise 6-7 days/week"
+                        ActivityLevel.SEDENTARY -> AquaMateStrings.Profile.SEDENTARY_DESCRIPTION
+                        ActivityLevel.MODERATE -> AquaMateStrings.Profile.MODERATE_DESCRIPTION
+                        ActivityLevel.INTENSE -> AquaMateStrings.Profile.INTENSE_DESCRIPTION
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             }
         }
@@ -467,7 +456,7 @@ private fun GoalMetric(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(modifier = Modifier.height(4.dp))

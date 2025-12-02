@@ -33,4 +33,26 @@ object AquaMateStrings {
         const val RECORD_DELETED = "Record deleted"
         const val VOLUME_REGISTERED = "ml registered!"
     }
+
+    object Profile {
+        const val TITLE = "Tell us about yourself"
+        const val SUBTITLE = "We'll use this information to personalize your daily hydration goal"
+        const val WEIGHT_LABEL = "Weight (kg)"
+        const val HEIGHT_LABEL = "Height (cm)"
+        const val DATE_OF_BIRTH_LABEL = "Date of Birth"
+        const val GENDER_TITLE = "Gender"
+        const val ACTIVITY_LEVEL_TITLE = "Activity Level"
+        const val MALE = "Male"
+        const val FEMALE = "Female"
+        const val SEDENTARY = "Sedentary"
+        const val SEDENTARY_DESCRIPTION = "Little to no exercise"
+        const val MODERATE = "Moderate"
+        const val MODERATE_DESCRIPTION = "Exercise 3-5 days/week"
+        const val INTENSE = "Intense"
+        const val INTENSE_DESCRIPTION = "Intense exercise 6-7 days/week"
+        const val DAILY_GOALS_TITLE = "Your Daily Goals"
+        const val WATER_GOAL_LABEL = "Water Goal"
+        const val BMI_LABEL = "BMI"
+        const val SAVE_PROFILE_BUTTON = "Save Profile"
+    }
 }
