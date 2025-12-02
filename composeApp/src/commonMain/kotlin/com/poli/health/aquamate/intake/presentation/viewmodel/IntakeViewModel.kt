@@ -113,6 +113,7 @@ class IntakeViewModel(
                         val today = Clock.System.now()
                             .toLocalDateTime(TimeZone.currentSystemDefault()).date
                         val updatedDailyIntake = getDailyIntakeUseCase(userId, today)
+                        val updatedWeeklyStats = getWeeklyStatsUseCase(userId)
 
                         val progressPercentage = if (dailyGoal > 0 && updatedDailyIntake != null) {
                             ((updatedDailyIntake.totalMl.toFloat() / dailyGoal) * 100).toInt()
@@ -123,6 +124,7 @@ class IntakeViewModel(
                         _state.update {
                             it.copy(
                                 dailyIntake = updatedDailyIntake,
+                                weeklyStats = updatedWeeklyStats,
                                 progressPercentage = progressPercentage,
                                 isLoading = false,
                                 successMessage = "${volumeMl}ml registered successfully"
@@ -211,6 +213,7 @@ class IntakeViewModel(
                 deleteIntakeByIdUseCase(userId, date, intakeId)
                     .onSuccess {
                         val updatedDailyIntake = getDailyIntakeUseCase(userId, date)
+                        val updatedWeeklyStats = getWeeklyStatsUseCase(userId)
                         val dailyGoal = _state.value.dailyGoalMl
 
                         val progressPercentage = if (dailyGoal > 0 && updatedDailyIntake != null) {
@@ -222,6 +225,7 @@ class IntakeViewModel(
                         _state.update {
                             it.copy(
                                 dailyIntake = updatedDailyIntake,
+                                weeklyStats = updatedWeeklyStats,
                                 progressPercentage = progressPercentage,
                                 isLoading = false,
                                 successMessage = "Intake deleted successfully"

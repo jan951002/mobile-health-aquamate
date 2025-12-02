@@ -65,7 +65,7 @@ private fun StatsHeader() {
         )
         Text(
             text = AquaMateStrings.Intake.WEEKLY_STATS_TITLE,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
     }

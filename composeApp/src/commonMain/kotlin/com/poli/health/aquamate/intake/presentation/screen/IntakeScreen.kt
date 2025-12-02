@@ -1,12 +1,11 @@
 package com.poli.health.aquamate.intake.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -14,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.WaterDrop
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -150,11 +148,12 @@ private fun IntakeContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(MaterialTheme.dimensions.ScreenMarginHorizontal),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingL)
+            .padding(
+                horizontal = MaterialTheme.dimensions.ScreenMarginHorizontal,
+                vertical = MaterialTheme.dimensions.ScreenMarginTop
+            ),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.SpacingM)
     ) {
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.SpacingS))
-
         DateNavigator(
             selectedDate = state.selectedDate,
             onPreviousDay = {
@@ -165,6 +164,10 @@ private fun IntakeContent(
                 val nextDate = state.selectedDate.plus(1, DateTimeUnit.DAY)
                 onEvent(IntakeEvent.SelectDate(nextDate))
             }
+        )
+
+        WeeklyStatsCard(
+            weeklyStats = state.weeklyStats
         )
 
         DailyProgressCard(
@@ -186,12 +189,6 @@ private fun IntakeContent(
                 onEvent(IntakeEvent.DeleteIntake(intakeId))
             }
         )
-
-        WeeklyStatsCard(
-            weeklyStats = state.weeklyStats
-        )
-
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.SpacingM))
     }
 }
 
