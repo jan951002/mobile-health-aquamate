@@ -144,9 +144,9 @@ fun UserProfileScreen(
                 Column(
                     modifier = Modifier.padding(AquaMateDimensions.CardPadding)
                 ) {
-                    Row(
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(AquaMateDimensions.SpacingMS)
+                        verticalArrangement = Arrangement.spacedBy(AquaMateDimensions.SpacingM)
                     ) {
                         ProfileTextField(
                             value = state.weight,
@@ -159,7 +159,7 @@ fun UserProfileScreen(
                                 onNext = { heightFocusRequester.requestFocus() }
                             ),
                             enabled = !state.isLoading,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.fillMaxWidth()
                         )
 
                         ProfileTextField(
@@ -173,7 +173,7 @@ fun UserProfileScreen(
                                 onDone = { focusManager.clearFocus() }
                             ),
                             modifier = Modifier
-                                .weight(1f)
+                                .fillMaxWidth()
                                 .focusRequester(heightFocusRequester),
                             enabled = !state.isLoading
                         )
