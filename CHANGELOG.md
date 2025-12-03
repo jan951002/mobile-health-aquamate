@@ -19,3 +19,4 @@
 
 ### Fixed
 - Decouple intake feature from onboarding.
+- Refactor UIDatePicker state handling in ProfileDateField.
