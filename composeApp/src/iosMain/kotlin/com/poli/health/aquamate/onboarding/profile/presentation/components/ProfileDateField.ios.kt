@@ -20,10 +20,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.interop.UIKitView
-import androidx.compose.ui.draw.clip
 import com.poli.health.aquamate.ui.theme.AquaMateDimensions
 import com.poli.health.aquamate.ui.theme.AquaMateStrings
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -31,15 +30,15 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.ExperimentalTime
 import platform.Foundation.NSCalendar
+import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
 import platform.Foundation.timeIntervalSince1970
-import platform.Foundation.NSDate
 import platform.UIKit.UIColor
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
 import platform.UIKit.UIDatePickerStyle
+import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalForeignApi::class, ExperimentalTime::class)
 @Composable
@@ -52,7 +51,7 @@ actual fun ProfileDateField(
     enabled: Boolean
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
-    var temporaryBirthDate by remember(selectedDate) { mutableStateOf(selectedDate) }
+    var datePickerReference by remember { mutableStateOf<UIDatePicker?>(null) }
 
     val dateText = selectedDate?.let {
         "${it.dayOfMonth}/${it.monthNumber}/${it.year}"
@@ -102,7 +101,7 @@ actual fun ProfileDateField(
             },
             text = {
                 val surfaceColor = MaterialTheme.colorScheme.surface
-                
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,7 +113,8 @@ actual fun ProfileDateField(
                         factory = {
                             val picker = UIDatePicker()
                             picker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
-                            picker.preferredDatePickerStyle = UIDatePickerStyle.UIDatePickerStyleWheels
+                            picker.preferredDatePickerStyle =
+                                UIDatePickerStyle.UIDatePickerStyleWheels
                             picker.backgroundColor = UIColor.colorWithRed(
                                 red = surfaceColor.red.toDouble(),
                                 green = surfaceColor.green.toDouble(),
@@ -145,27 +145,26 @@ actual fun ProfileDateField(
                                 calendar.dateFromComponents(dateComponents)?.let { initialDate ->
                                     picker.setDate(initialDate)
                                 }
+                            } ?: run {
+                                maxDate?.let { picker.setDate(it) }
                             }
+
+                            datePickerReference = picker
                             picker
                         },
-                        update = { datePicker ->
-                            val selectedNSDate = datePicker.date
-                            val selectedTimeInterval = selectedNSDate.timeIntervalSince1970
-                            val selectedInstant =
-                                Instant.fromEpochSeconds(selectedTimeInterval.toLong())
-                            val updatedBirthDate =
-                                selectedInstant.toLocalDateTime(TimeZone.UTC).date
-                            temporaryBirthDate = updatedBirthDate
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                        interactive = true
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        temporaryBirthDate?.let { finalBirthDate ->
+                        datePickerReference?.let { picker ->
+                            val selectedNSDate = picker.date
+                            val selectedTimeInterval = selectedNSDate.timeIntervalSince1970
+                            val selectedInstant =
+                                Instant.fromEpochSeconds(selectedTimeInterval.toLong())
+                            val finalBirthDate = selectedInstant.toLocalDateTime(TimeZone.UTC).date
                             onDateSelected(finalBirthDate)
                         }
                         showDatePicker = false
@@ -188,4 +187,3 @@ actual fun ProfileDateField(
         )
     }
 }
-
