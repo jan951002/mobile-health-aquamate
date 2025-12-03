@@ -13,6 +13,8 @@ import com.poli.health.aquamate.intake.presentation.screen.IntakeScreen
 import com.poli.health.aquamate.intake.presentation.viewmodel.IntakeViewModel
 import com.poli.health.aquamate.onboarding.profile.domain.usecase.HasUserProfileUseCase
 import com.poli.health.aquamate.onboarding.profile.presentation.screen.UserProfileScreen
+import com.poli.health.aquamate.onboarding.splash.presentation.screen.SplashScreen
+import com.poli.health.aquamate.onboarding.splash.presentation.viewmodel.SplashViewModel
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -25,6 +27,26 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable<Route.Splash> {
+            val viewModel: SplashViewModel = koinViewModel()
+            val state by viewModel.state.collectAsState()
+
+            SplashScreen()
+
+            LaunchedEffect(Unit) {
+                viewModel.determineNavigation()
+            }
+
+            LaunchedEffect(state.navigationDestination) {
+                state.navigationDestination?.let { destination ->
+                    navController.navigate(destination) {
+                        popUpTo(Route.Splash) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
+
         composable<Route.Auth> {
             val getCurrentUserIdUseCase: GetCurrentUserIdUseCase = koinInject()
             val hasUserProfileUseCase: HasUserProfileUseCase = koinInject()

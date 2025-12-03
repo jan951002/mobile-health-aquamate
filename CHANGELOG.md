@@ -15,6 +15,7 @@
 - Implement user logout
 - Implement UI improvements in intake screen
 - Update app icon for Android and iOS
+- Add animated splash screen
 
 ### Fixed
 - Decouple intake feature from onboarding.
