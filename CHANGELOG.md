@@ -14,6 +14,7 @@
 - Implement intake feature v2 to use the user profile info. Also, implement improvements in the intake UI
 - Implement user logout
 - Implement UI improvements in intake screen
+- Update app icon for Android and iOS
 
 ### Fixed
 - Decouple intake feature from onboarding.
