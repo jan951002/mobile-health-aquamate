@@ -16,6 +16,7 @@
 - Implement UI improvements in intake screen
 - Update app icon for Android and iOS
 - Add animated splash screen
+- Implement kotzilla to app monitoring
 
 ### Fixed
 - Decouple intake feature from onboarding.

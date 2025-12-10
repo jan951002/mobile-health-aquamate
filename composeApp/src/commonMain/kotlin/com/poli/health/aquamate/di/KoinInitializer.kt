@@ -5,6 +5,7 @@ import com.poli.health.aquamate.onboarding.auth.di.authModule
 import com.poli.health.aquamate.intake.di.intakeModule
 import com.poli.health.aquamate.onboarding.profile.di.profileModule
 import com.poli.health.aquamate.onboarding.splash.di.splashModule
+import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -20,5 +21,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
     startKoin {
         appDeclaration()
         modules(sharedModules)
+        analytics()
     }
 }
