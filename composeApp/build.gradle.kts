@@ -1,4 +1,4 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import io.kotzilla.gradle.ext.KotzillaKeyGeneration
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotzilla)
 }
 
 kotlin {
@@ -64,11 +65,19 @@ kotlin {
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.auth)
             implementation(libs.gitlive.firebase.firestore)
+
+            implementation(libs.kotzilla.sdk.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+kotzilla  {
+    versionName = "1.0.0"
+    keyGeneration = KotzillaKeyGeneration.COMPOSE
+    composeInstrumentation = true
 }
 
 android {
